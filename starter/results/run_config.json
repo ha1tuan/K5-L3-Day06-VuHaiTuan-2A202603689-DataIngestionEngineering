@@ -1,0 +1,228 @@
+{
+  "run_started_utc": "2026-11-13T12:04:44+00:00",
+  "pdf": "D:\\VinUni\\lab\\lab6\\K5-L3-Day06-2A202603689-DataIngestionEngineering\\data\\master-claude-code-and-cowork.pdf",
+  "questions": "D:\\VinUni\\lab\\lab6\\K5-L3-Day06-2A202603689-DataIngestionEngineering\\benchmark\\questions.json",
+  "document_id": "master-claude-code-cowork-2026",
+  "embedding_model": "gemini-embedding-2",
+  "dimensions": 768,
+  "embedding_task_types": {
+    "documents": "RETRIEVAL_DOCUMENT",
+    "queries": "RETRIEVAL_QUERY"
+  },
+  "vector_store": "PostgreSQL + pgvector, HNSW index, cosine distance (approximate)",
+  "strategies": {
+    "A": {
+      "chunking": "fixed_size",
+      "size": 500,
+      "overlap": 50,
+      "index": "A",
+      "filter": false
+    },
+    "B": {
+      "chunking": "by_paragraph",
+      "max_size": 1000,
+      "overlap": 0,
+      "index": "B",
+      "filter": false
+    },
+    "C": {
+      "chunking": "by_paragraph",
+      "max_size": 1000,
+      "overlap": 0,
+      "index": "B",
+      "filter": "question.filter when present, else none"
+    }
+  },
+  "top_k": 3,
+  "corpus": {
+    "physical_pages": 220,
+    "content_pages": 215,
+    "excluded_no_text_pages": [
+      1
+    ],
+    "excluded_front_matter_pages": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "year": 2026,
+    "year_source": "copyright page",
+    "section_source": "PDF outline (bookmarks), checked at run time"
+  },
+  "sections": [
+    {
+      "start_page": 1,
+      "section": "front_matter",
+      "title": "Cover"
+    },
+    {
+      "start_page": 2,
+      "section": "front_matter",
+      "title": "Title Page"
+    },
+    {
+      "start_page": 3,
+      "section": "front_matter",
+      "title": "Copyright"
+    },
+    {
+      "start_page": 4,
+      "section": "front_matter",
+      "title": "Epigraph"
+    },
+    {
+      "start_page": 5,
+      "section": "front_matter",
+      "title": "Contents"
+    },
+    {
+      "start_page": 6,
+      "section": "preface",
+      "title": "Preface: The AI Coworker Has Arrived"
+    },
+    {
+      "start_page": 10,
+      "section": "ch01_agentic_leap",
+      "title": "1. The Agentic Leap — From Chat to Action"
+    },
+    {
+      "start_page": 15,
+      "section": "ch02_ecosystem",
+      "title": "2. The Ecosystem — Models, Plans, and Platforms"
+    },
+    {
+      "start_page": 21,
+      "section": "ch03_installation",
+      "title": "3. Installation and First Launch"
+    },
+    {
+      "start_page": 28,
+      "section": "ch04_claude_code_fundamentals",
+      "title": "4. Claude Code Fundamentals — The Agentic CLI"
+    },
+    {
+      "start_page": 39,
+      "section": "ch05_everyday_claude_code",
+      "title": "5. Everyday Tasks with Claude Code"
+    },
+    {
+      "start_page": 48,
+      "section": "ch06_mcp",
+      "title": "6. MCP — Connecting Claude Code to the World"
+    },
+    {
+      "start_page": 61,
+      "section": "ch07_skills_hooks_automation",
+      "title": "7. Skills, Hooks, and Automation"
+    },
+    {
+      "start_page": 76,
+      "section": "ch08_ide_cicd",
+      "title": "8. Claude Code in the IDE and CI/CD"
+    },
+    {
+      "start_page": 85,
+      "section": "ch09_cowork_essentials",
+      "title": "9. Cowork Essentials"
+    },
+    {
+      "start_page": 95,
+      "section": "ch10_everyday_cowork",
+      "title": "10. Everyday Tasks with Cowork"
+    },
+    {
+      "start_page": 104,
+      "section": "ch11_connectors_plugins",
+      "title": "11. Connectors and Plugins — Extending Cowork"
+    },
+    {
+      "start_page": 113,
+      "section": "ch12_global_instructions",
+      "title": "12. Global Instructions and Personal Configuration"
+    },
+    {
+      "start_page": 128,
+      "section": "ch13_safety_security",
+      "title": "13. Safety, Security, and What Can Go Wrong"
+    },
+    {
+      "start_page": 135,
+      "section": "ch14_usage_costs",
+      "title": "14. Usage Limits, Costs, and Efficiency"
+    },
+    {
+      "start_page": 142,
+      "section": "ch15_config_hierarchy",
+      "title": "15. The Configuration Hierarchy"
+    },
+    {
+      "start_page": 149,
+      "section": "ch16_agent_teams",
+      "title": "16. Agent Teams and Parallel Workflows"
+    },
+    {
+      "start_page": 158,
+      "section": "ch17_professions",
+      "title": "17. Cowork for Specific Professions"
+    },
+    {
+      "start_page": 167,
+      "section": "ch18_cowork_office",
+      "title": "18. Cowork and Microsoft Office"
+    },
+    {
+      "start_page": 177,
+      "section": "ch19_non_coders_advanced",
+      "title": "19. Claude Code for Non-Coders — Advanced"
+    },
+    {
+      "start_page": 182,
+      "section": "ch20_workflows",
+      "title": "20. Twelve Complete Workflows from Start to Finish"
+    },
+    {
+      "start_page": 192,
+      "section": "ch21_choosing_tool",
+      "title": "21. Choosing the Right Tool for the Job"
+    },
+    {
+      "start_page": 196,
+      "section": "ch22_future",
+      "title": "22. The Future of Agentic AI"
+    },
+    {
+      "start_page": 200,
+      "section": "a_request",
+      "title": "A Request"
+    },
+    {
+      "start_page": 201,
+      "section": "appendix_a_cli_reference",
+      "title": "Appendix A: Claude Code CLI Reference"
+    },
+    {
+      "start_page": 205,
+      "section": "appendix_b_cowork_commands",
+      "title": "Appendix B: Quick Reference — Cowork Slash Commands"
+    },
+    {
+      "start_page": 208,
+      "section": "appendix_c_claude_md_templates",
+      "title": "Appendix C: CLAUDE.md Templates"
+    },
+    {
+      "start_page": 214,
+      "section": "appendix_d_troubleshooting",
+      "title": "Appendix D: Troubleshooting"
+    }
+  ],
+  "question_count": 24,
+  "question_warnings": [],
+  "embed_query_seconds": 14.68,
+  "manual_sheets": {
+    "coherence": "manual_coherence.csv",
+    "grounding": "manual_grounding.csv"
+  }
+}

@@ -2,3 +2,6 @@
 psycopg[binary]==3.3.8
 pypdf>=5,<7
 python-dotenv>=1,<2
+google-genai==3.3.0
+
+langchain-text-splitters==1.1.3

@@ -1,0 +1,40 @@
+{
+  "A": {
+    "chunk_count": 1162,
+    "total_chars": 391503,
+    "approx_tokens": 97875,
+    "min_chars": 7,
+    "median_chars": 373.5,
+    "mean_chars": 336.9,
+    "max_chars": 499,
+    "strategy": "A",
+    "embedding_model": "gemini-embedding-2",
+    "total": 1162,
+    "embedded": 0,
+    "unchanged": 1162,
+    "skipped_empty": 0,
+    "removed": 0,
+    "seconds": 0.25,
+    "removed_stale_documents": 0,
+    "stored_rows": 1162
+  },
+  "B": {
+    "chunk_count": 556,
+    "total_chars": 391047,
+    "approx_tokens": 97761,
+    "min_chars": 25,
+    "median_chars": 759.0,
+    "mean_chars": 703.3,
+    "max_chars": 999,
+    "strategy": "B",
+    "embedding_model": "gemini-embedding-2",
+    "total": 556,
+    "embedded": 0,
+    "unchanged": 556,
+    "skipped_empty": 0,
+    "removed": 0,
+    "seconds": 0.14,
+    "removed_stale_documents": 0,
+    "stored_rows": 556
+  }
+}

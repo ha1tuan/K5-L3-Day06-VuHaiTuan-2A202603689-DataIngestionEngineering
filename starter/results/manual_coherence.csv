@@ -1,0 +1,298 @@
+﻿strategy,document_id,page,anchor,chunk_id,chunk_text,coherence_score_0_2,reason
+A,master-claude-code-cowork-2026,6,"were switching
+to paid subscriptions specifically to use these tools. One Anthropic
+engineer,",master-claude-code-cowork-2026-p6-fixed-2,"Anthropic's engineers noticed. The company's data showed clear
+patterns: non-developers were not just dabbling — they were switching
+to paid subscriptions specifically to use these tools. One Anthropic
+engineer, Boris Cherny, made the pattern public, documenting the
+unexpected wave of adoption across knowledge work professions. The
+company's leadership took notice. They began to see what their engineers
+had built not as a specialized tool for programmers, but as something",,
+A,master-claude-code-cowork-2026,27,"Desktop for chat only. Cowork
+requires a paid subscription (Pro, Max, Team, or Enterprise).
+
+Claude",master-claude-code-cowork-2026-p27-fixed-3,"Key Takeaways
+Claude Desktop and Claude Code are two interfaces to the same
+agentic capabilities. Desktop is graphical; Code is command-line.
+Free accounts can use Claude Desktop for chat only. Cowork
+requires a paid subscription (Pro, Max, Team, or Enterprise).
+
+Claude Code requires Node.js and either an active paid subscription
+or an Anthropic API key.
+
+Both tools read and operate on real files in your file system with your
+permission.",,
+A,master-claude-code-cowork-2026,48,"from 100,000 total downloads in
+November 2024 to over 8 million by April 2025 — roughly",master-claude-code-cowork-2026-p48-fixed-2,"MCP (Model Context Protocol) is an open standard Anthropic
+introduced in late 2024 for connecting Claude to external tools,
+databases, and APIs. It has grown from 100,000 total downloads in
+November 2024 to over 8 million by April 2025 — roughly 80x growth
+in five months. As of early 2026, publicly listed MCP servers number in
+the thousands, with directories tracking the count daily as new servers
+appear. The ecosystem mirrors the early days of npm: fast-growing,",,
+A,master-claude-code-cowork-2026,69,"Deployment
+Completion
+This hook watches for deployment commands and sends a Slack
+notification",master-claude-code-cowork-2026-p69-fixed-2,"Hook Example 4: Send Slack Notification on Deployment
+Completion
+This hook watches for deployment commands and sends a Slack
+notification when they complete — useful for build pipelines or any task
+that takes time.
+
+Configuration in .claude/settings.json:",,
+A,master-claude-code-cowork-2026,91,"that deliverables should be saved as .docx, there is no need to say
+it again at the",master-claude-code-cowork-2026-p91-fixed-2,"This is specific, actionable, and short.
+
+Keep project instructions focused on what is true about this project.
+Do not restate your global preferences here. If your global instructions
+specify that deliverables should be saved as .docx, there is no need to say
+it again at the project level. Project instructions add context; they do not
+replace the layer above them. Chapter 15 covers how these layers
+interact.",,
+A,master-claude-code-cowork-2026,112,"plugin.json
+manifest, skill definitions, and slash command mappings, making them
+straightforward",master-claude-code-cowork-2026-p112-fixed-3,"Custom plugins follow a standard structure with a plugin.json
+manifest, skill definitions, and slash command mappings, making them
+straightforward to build and distribute.",,
+A,master-claude-code-cowork-2026,133,"reviewed Cowork's plan before clicking ""Run""?
+
+☐
+Am I using trusted MCP servers and",master-claude-code-cowork-2026-p133-fixed-2,"☐
+Have I backed up the files Claude will touch?
+
+☐
+Have I given Claude the minimum folder access needed for this task?
+☐
+Have I reviewed Cowork's plan before clicking ""Run""?
+
+☐
+Am I using trusted MCP servers and plugins only?
+
+☐
+Am I reading every approval prompt, not just clicking ""Allow""?
+
+If you cannot check all five boxes, do not proceed. Review your
+setup or reconfigure permissions.",,
+A,master-claude-code-cowork-2026,156,"Teams sessions benefit from tight,
+well-scoped role definitions. The more precisely",master-claude-code-cowork-2026-p156-fixed-4,"The practical implication: Agent Teams sessions benefit from tight,
+well-scoped role definitions. The more precisely you define each agent's
+scope, the less cross-talk is needed, and the more of each agent's context
+window remains available for the actual work.",,
+A,master-claude-code-cowork-2026,177,"different
+formats, and you need to merge them into one consistent table.
+
+These are",master-claude-code-cowork-2026-p177-fixed-1,"Now you are facing a different kind of problem. You have 47 PDF
+research papers on machine learning, and you need to extract every
+mention of a specific algorithm, record the page number and the
+surrounding context, and compile it into a single document. Or you have
+spreadsheet data from three different sources that use three different
+formats, and you need to merge them into one consistent table.",,
+A,master-claude-code-cowork-2026,198,"to
+maintain control over systems that act on your behalf. The investment
+applies",master-claude-code-cowork-2026-p198-fixed-4,"The reader has now spent the preceding chapters developing exactly
+that skill. You have learned how to direct Claude Code and Cowork, how
+to grant and revoke permissions, how to verify outputs, and how to
+maintain control over systems that act on your behalf. The investment
+applies to any agentic system you encounter in the future—newer
+versions of Claude, tools from other AI companies, agents built on other
+architectures. The principles do not change.",,
+B,master-claude-code-cowork-2026,6,"were switching
+to paid subscriptions specifically to use these tools. One Anthropic
+engineer,",master-claude-code-cowork-2026-p6-paragraph-1,"Anthropic's engineers noticed. The company's data showed clear
+patterns: non-developers were not just dabbling — they were switching
+to paid subscriptions specifically to use these tools. One Anthropic
+engineer, Boris Cherny, made the pattern public, documenting the
+unexpected wave of adoption across knowledge work professions. The
+company's leadership took notice. They began to see what their engineers
+had built not as a specialized tool for programmers, but as something
+more fundamental: an architecture capable of automating any task
+involving a computer and a terminal, code or no code.
+
+That realization led to a strategic decision. In January 2026,
+Anthropic released Cowork as a research preview — an expanded
+version of Claude Code designed explicitly for anyone doing knowledge
+work. Cowork brought the same autonomous agent architecture into a
+web interface, pairing it with Claude's language capabilities. It could
+read and write to the web, modify documents, send emails, execute",,
+B,master-claude-code-cowork-2026,27,"Desktop for chat only. Cowork
+requires a paid subscription (Pro, Max, Team, or Enterprise).
+
+Claude",master-claude-code-cowork-2026-p27-paragraph-1,"Both tools share the same underlying engine and capabilities. What
+differs is the wrapper: the interface you interact with. Understanding this
+distinction—that both are the same tool in different containers—will help
+you use them effectively.
+
+Key Takeaways
+Claude Desktop and Claude Code are two interfaces to the same
+agentic capabilities. Desktop is graphical; Code is command-line.
+Free accounts can use Claude Desktop for chat only. Cowork
+requires a paid subscription (Pro, Max, Team, or Enterprise).
+
+Claude Code requires Node.js and either an active paid subscription
+or an Anthropic API key.
+
+Both tools read and operate on real files in your file system with your
+permission.
+
+Cowork in Claude Desktop is the simpler entry point for new users;
+Claude Code is better for scripting and automation.",,
+B,master-claude-code-cowork-2026,48,"from 100,000 total downloads in
+November 2024 to over 8 million by April 2025 — roughly",master-claude-code-cowork-2026-p48-paragraph-1,"MCP (Model Context Protocol) is an open standard Anthropic
+introduced in late 2024 for connecting Claude to external tools,
+databases, and APIs. It has grown from 100,000 total downloads in
+November 2024 to over 8 million by April 2025 — roughly 80x growth
+in five months. As of early 2026, publicly listed MCP servers number in
+the thousands, with directories tracking the count daily as new servers
+appear. The ecosystem mirrors the early days of npm: fast-growing,
+powerful, and requiring some caution about what you install.
+
+The protocol works by exposing a set of resources, tools, and
+prompts to Claude. A resource is a piece of data — a database table, a
+file, an API response. A tool is a function Claude can call — write to a
+database, create a GitHub pull request, send an email. A prompt is a pre-written instruction template that Claude can invoke to accomplish a
+structured task. When you run Claude Code with an MCP server active,",,
+B,master-claude-code-cowork-2026,69,"Deployment
+Completion
+This hook watches for deployment commands and sends a Slack
+notification",master-claude-code-cowork-2026-p69-paragraph-0,"{
+echo ""$(date +%Y-%m-%d\ %H:%M:%S) | $COMMAND""
+echo ""---""
+} >> ""$AUDIT_LOG""
+# K EEP THE AUDIT LOG READABLE : limit to last 10,000 lines
+LINES=$(wc -l < ""$AUDIT_LOG"")
+if [ ""$LINES"" -gt 10000 ]; then
+tail -n 10000 ""$AUDIT_LOG"" > ""$AUDIT_LOG.tmp""
+mv ""$AUDIT_LOG.tmp"" ""$AUDIT_LOG""
+fi
+Every bash command Claude runs is logged with a timestamp. At the
+end of each day you have a complete record of what Claude executed —
+useful for understanding root causes if something goes wrong, or for
+compliance audits.
+
+Hook Example 4: Send Slack Notification on Deployment
+Completion
+This hook watches for deployment commands and sends a Slack
+notification when they complete — useful for build pipelines or any task
+that takes time.
+
+Configuration in .claude/settings.json:",,
+B,master-claude-code-cowork-2026,91,"that deliverables should be saved as .docx, there is no need to say
+it again at the",master-claude-code-cowork-2026-p91-paragraph-1,"Keep project instructions focused on what is true about this project.
+Do not restate your global preferences here. If your global instructions
+specify that deliverables should be saved as .docx, there is no need to say
+it again at the project level. Project instructions add context; they do not
+replace the layer above them. Chapter 15 covers how these layers
+interact.
+
+Context
+Projects include a Context section where you add the reference
+material Claude should be able to consult during any session. Context
+can be a local folder linked from your computer or a URL. Linking a
+local folder is the most common approach: if a client's brand guide, style
+sheet, and specification documents all live in a folder on your desktop,
+link that folder once and Claude can read from it in every subsequent
+session. Because you are linking the live folder rather than uploading a
+snapshot, changes to those files are picked up automatically.",,
+B,master-claude-code-cowork-2026,112,"plugin.json
+manifest, skill definitions, and slash command mappings, making them
+straightforward",master-claude-code-cowork-2026-p112-paragraph-1,"Plugins bundle connectors, skills, and commands together so
+installing a single plugin gives you a complete specialized agent.
+Anthropic's initial plugin library includes Productivity, Sales,
+Marketing, Finance, HR, Legal, Data Analysis, and Software
+Development, with a dedicated Plugin Create plugin for building custom
+ones.
+
+Custom plugins follow a standard structure with a plugin.json
+manifest, skill definitions, and slash command mappings, making them
+straightforward to build and distribute.",,
+B,master-claude-code-cowork-2026,133,"reviewed Cowork's plan before clicking ""Run""?
+
+☐
+Am I using trusted MCP servers and",master-claude-code-cowork-2026-p133-paragraph-1,"☐
+Have I given Claude the minimum folder access needed for this task?
+☐
+Have I reviewed Cowork's plan before clicking ""Run""?
+
+☐
+Am I using trusted MCP servers and plugins only?
+
+☐
+Am I reading every approval prompt, not just clicking ""Allow""?
+
+If you cannot check all five boxes, do not proceed. Review your
+setup or reconfigure permissions.
+
+Chapter Summary and Key Takeaways
+Agentic AI is powerful because it acts. That power comes with real
+risk. The capability that lets Claude Code make you more productive can
+cause real damage if misused or compromised.
+
+The risks are manageable. Prompt injection is real, but you can
+protect yourself by being skeptical of unexpected actions. MCP servers
+are attack vectors, but install only from trusted sources and review
+permissions carefully. Approval fatigue is a human problem, and
+discipline is the cure. File safety is a matter of backups and permissions.
+Some tasks are simply not suited for Cowork.",,
+B,master-claude-code-cowork-2026,156,"Teams sessions benefit from tight,
+well-scoped role definitions. The more precisely",master-claude-code-cowork-2026-p156-paragraph-2,"The practical implication: Agent Teams sessions benefit from tight,
+well-scoped role definitions. The more precisely you define each agent's
+scope, the less cross-talk is needed, and the more of each agent's context
+window remains available for the actual work.
+
+Chapter Summary and Key Takeaways
+Agent Teams bring collaborative intelligence to parallel work. Unlike
+subagents, which operate in isolation, Agent Teams members
+communicate and coordinate. This collaboration costs tokens but saves
+time and prevents rework on complex tasks. Agent Teams is
+experimental, requiring explicit opt-in and Opus 4.6, but for complex
+reviews, large refactors, and multi-disciplinary analysis, they offer
+genuine capability.
+
+Key Takeaways:
+
+Subagents work in isolation. Agent Teams members communicate
+and coordinate.
+
+Agent Teams requires
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and Opus
+4.6.
+
+Use Agent Teams for complex, interdependent work. Use subagents
+for independent tasks.",,
+B,master-claude-code-cowork-2026,177,"different
+formats, and you need to merge them into one consistent table.
+
+These are",master-claude-code-cowork-2026-p177-paragraph-0,"19
+CLAUDE CODE FOR NON-CODERS — ADVANCED
+
+You have been using Claude Code for two months now. You started
+small—organizing a folder of receipts, searching a document for
+every mention of a person's name, generating a summary of a
+meeting transcript. Your confidence grew. You learned that you did not
+need to write the code yourself; you just needed to describe the task
+clearly. Claude did the writing. You did the thinking.
+
+Now you are facing a different kind of problem. You have 47 PDF
+research papers on machine learning, and you need to extract every
+mention of a specific algorithm, record the page number and the
+surrounding context, and compile it into a single document. Or you have
+spreadsheet data from three different sources that use three different
+formats, and you need to merge them into one consistent table.",,
+B,master-claude-code-cowork-2026,198,"to
+maintain control over systems that act on your behalf. The investment
+applies",master-claude-code-cowork-2026-p198-paragraph-1,"Competency in knowledge work now increasingly means thinking
+clearly about what to delegate, to whom, under what conditions, and with
+what safeguards. This is harder than simply doing the work yourself, at
+least initially. It requires clear articulation of what you want, verification
+that what comes back is correct, understanding of what could go wrong,
+and judgment about acceptable risk. But it is also a multiplier. A person
+who masters this skill accomplishes roughly ten times as much in the
+same number of hours.
+
+The reader has now spent the preceding chapters developing exactly
+that skill. You have learned how to direct Claude Code and Cowork, how
+to grant and revoke permissions, how to verify outputs, and how to
+maintain control over systems that act on your behalf. The investment
+applies to any agentic system you encounter in the future—newer
+versions of Claude, tools from other AI companies, agents built on other
+architectures. The principles do not change.",,

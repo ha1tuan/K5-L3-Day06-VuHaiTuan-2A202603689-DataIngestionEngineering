@@ -1,0 +1,478 @@
+[
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 16,
+      "section": "ch02_ecosystem",
+      "year": 2026
+    },
+    "question": {
+      "id": "q01",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Theo sách, kể từ ngày 17/2/2026 model nào là model mặc định trên claude.ai và Cowork cho hầu hết người dùng?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 16,
+      "evidence_quote": "As of February 17, 2026, Sonnet is the default model across claude.ai and Cowork for most users.",
+      "expected_answer": "Claude Sonnet 4.6"
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 16,
+      "section": "ch02_ecosystem",
+      "year": 2026
+    },
+    "question": {
+      "id": "q02",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Với cùng số token, Claude Haiku 4.5 rẻ hơn Opus khoảng bao nhiêu lần?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 16,
+      "evidence_quote": "Haiku is approximately five times cheaper than Opus for equivalent token counts",
+      "expected_answer": "Khoảng 5 lần"
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 19,
+      "section": "ch02_ecosystem",
+      "year": 2026
+    },
+    "question": {
+      "id": "q03",
+      "type": "dieu_kien_ngoai_le",
+      "split": "dev",
+      "question": "Cowork có chạy được trên máy Windows ARM64 (ví dụ Surface dùng chip Snapdragon) không?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 19,
+      "evidence_quote": "Windows ARM64 (such as on some newer Microsoft Surface devices running Snapdragon processors) is not currently supported.",
+      "expected_answer": "Không. Cowork hiện chỉ chạy trên macOS và Windows x64; Windows ARM64 chưa được hỗ trợ."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 24,
+      "section": "ch03_installation",
+      "year": 2026
+    },
+    "question": {
+      "id": "q04",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Claude Code yêu cầu Node.js tối thiểu phiên bản nào?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 24,
+      "evidence_quote": "Claude Code requires Node.js 18 or later.",
+      "expected_answer": "Node.js 18 trở lên"
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 30,
+      "section": "ch04_claude_code_fundamentals",
+      "year": 2026
+    },
+    "question": {
+      "id": "q05",
+      "type": "dien_dat_lai",
+      "split": "dev",
+      "question": "Tệp CLAUDE.md khác một tệp README thông thường ở điểm nào theo quan điểm của sách?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 30,
+      "evidence_quote": "This is not a README for humans. This is a briefing for Claude.",
+      "expected_answer": "CLAUDE.md không phải README viết cho con người mà là bản briefing (tóm tắt bối cảnh) dành cho Claude."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 36,
+      "section": "ch04_claude_code_fundamentals",
+      "year": 2026
+    },
+    "question": {
+      "id": "q06",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Những lệnh thiết yếu nào của Claude Code được sách khuyên nên học trước cho công việc hằng ngày?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 36,
+      "evidence_quote": "The essential commands—claude, --continue, /model, /clear, /stats, /memory—are the basic operations of daily work.",
+      "expected_answer": "claude, --continue, /model, /clear, /stats, /memory"
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 58,
+      "section": "ch06_mcp",
+      "year": 2026
+    },
+    "question": {
+      "id": "q07",
+      "type": "dieu_kien_ngoai_le",
+      "split": "dev",
+      "question": "Trong trường hợp nào một MCP server được xem là dấu hiệu đáng ngờ (red flag)?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 58,
+      "evidence_quote": "If a server requests more permissions than it needs to function, that is a red flag.",
+      "expected_answer": "Khi server yêu cầu nhiều quyền hơn mức nó cần để hoạt động."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 58,
+      "section": "ch06_mcp",
+      "year": 2026
+    },
+    "question": {
+      "id": "q08",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Lần đầu tiên thêm một MCP server, Claude Code hiển thị gì trước khi server đó được sử dụng?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 58,
+      "evidence_quote": "The first time you add an MCP server, Claude Code displays a trust prompt before the server becomes available.",
+      "expected_answer": "Một trust prompt (lời nhắc xác nhận tin cậy) trước khi server khả dụng."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 71,
+      "section": "ch07_skills_hooks_automation",
+      "year": 2026
+    },
+    "question": {
+      "id": "q09",
+      "type": "dien_dat_lai",
+      "split": "dev",
+      "question": "Khi subagent chạy với chế độ worktree isolation, các thay đổi của nó được quản lý ra sao?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 71,
+      "evidence_quote": "Worktree isolation: The subagent runs in a temporary git worktree, keeping all changes isolated until you explicitly review and merge them.",
+      "expected_answer": "Subagent chạy trong một git worktree tạm thời; mọi thay đổi được cô lập cho tới khi bạn chủ động review và merge."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 73,
+      "section": "ch07_skills_hooks_automation",
+      "year": 2026
+    },
+    "question": {
+      "id": "q10",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Scheduled task trong Cowork hỗ trợ những tần suất chạy nào?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 73,
+      "evidence_quote": "Hourly Daily Weekly Weekdays only On demand (manual trigger, no automatic schedule)",
+      "expected_answer": "Hourly, Daily, Weekly, Weekdays only và On demand (kích hoạt thủ công, không lịch tự động)."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 74,
+      "section": "ch07_skills_hooks_automation",
+      "year": 2026
+    },
+    "question": {
+      "id": "q11",
+      "type": "dieu_kien_ngoai_le",
+      "split": "dev",
+      "question": "Nếu đến giờ chạy scheduled task mà máy đang ngủ hoặc Claude Desktop đang đóng thì điều gì xảy ra?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 74,
+      "evidence_quote": "your computer is asleep or the application is closed, Cowork skips that run. It does not fail silently: the next time Claude Desktop opens, Cowork detects the missed run and executes it automatically, then sends a notification.",
+      "expected_answer": "Cowork bỏ qua lần chạy đó; lần tiếp theo mở Claude Desktop, nó phát hiện lần chạy bị lỡ, tự động chạy bù và gửi thông báo."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 74,
+      "section": "ch07_skills_hooks_automation",
+      "year": 2026
+    },
+    "question": {
+      "id": "q12",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Claude Code cung cấp bao nhiêu hook event và hook được cấu hình trong tệp nào?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 74,
+      "evidence_quote": "Configure them in .claude/settings.json. Claude Code provides 25 hook events",
+      "expected_answer": "25 hook event; cấu hình trong .claude/settings.json."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 88,
+      "section": "ch09_cowork_essentials",
+      "year": 2026
+    },
+    "question": {
+      "id": "q13",
+      "type": "dien_dat_lai",
+      "split": "dev",
+      "question": "Việc Cowork chạy trong máy ảo (VM) có ngăn nó chỉnh sửa các tệp thật trên máy tôi không?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 88,
+      "evidence_quote": "The VM isolation protects your system from catastrophic failure or security breach; it does not prevent Cowork from changing your actual files.",
+      "expected_answer": "Không. VM chỉ bảo vệ hệ thống khỏi sự cố/xâm phạm, Cowork vẫn sửa tệp thật trong các thư mục được cấp quyền."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 114,
+      "section": "ch12_global_instructions",
+      "year": 2026
+    },
+    "question": {
+      "id": "q14",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Muốn chỉnh Global instructions của Cowork thì vào mục nào trong Claude Desktop?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 114,
+      "evidence_quote": "open the Cowork tab in Claude Desktop, navigate to Settings > Cowork, and find \"Global instructions.\"",
+      "expected_answer": "Mở tab Cowork trong Claude Desktop, vào Settings > Cowork và tìm mục \"Global instructions\"."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 136,
+      "section": "ch14_usage_costs",
+      "year": 2026
+    },
+    "question": {
+      "id": "q15",
+      "type": "truc_tiep",
+      "split": "dev",
+      "question": "Một tác vụ Cowork đơn giản (lấy file, đọc, phân tích, trả lời) thường tiêu tốn khoảng bao nhiêu token?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 136,
+      "evidence_quote": "Simple Cowork tasks—fetch a file, read it, analyze it, return an answer—typically consume between 5,000 and 15,000 tokens.",
+      "expected_answer": "Khoảng 5.000 – 15.000 token."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 140,
+      "section": "ch14_usage_costs",
+      "year": 2026
+    },
+    "question": {
+      "id": "q16",
+      "type": "dieu_kien_ngoai_le",
+      "split": "dev",
+      "question": "Người dùng gói Free có thể dùng Cowork ở dạng giới hạn không?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 140,
+      "evidence_quote": "What you cannot do on the Free tier: you cannot access Cowork, even in a limited form.",
+      "expected_answer": "Không. Gói Free không truy cập được Cowork dưới bất kỳ hình thức nào; cần gói trả phí."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 156,
+      "section": "ch16_agent_teams",
+      "year": 2026
+    },
+    "question": {
+      "id": "q17",
+      "type": "metadata",
+      "split": "dev",
+      "question": "Trong chương về Agent Teams, vì sao việc mỗi agent có context window riêng lại cho kết quả tốt hơn một agent chạy tuần tự?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 156,
+      "evidence_quote": "Large language models do their best work in the first 40 to 50 percent of the context window; beyond that threshold, attention degrades and output quality drops.",
+      "expected_answer": "Vì LLM làm việc tốt nhất trong 40–50% đầu của context window; vượt ngưỡng đó sự chú ý và chất lượng giảm. Mỗi agent bắt đầu với context mới nên không rơi vào nửa suy giảm.",
+      "filter": {
+        "section": "ch16_agent_teams"
+      }
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 144,
+      "section": "ch15_config_hierarchy",
+      "year": 2026
+    },
+    "question": {
+      "id": "q18",
+      "type": "metadata",
+      "split": "dev",
+      "question": "Trong chương về configuration hierarchy, cấp cấu hình nào có độ ưu tiên cao nhất?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 144,
+      "evidence_quote": "Session-level commands (highest priority)",
+      "expected_answer": "Session-level commands (lệnh ở cấp phiên).",
+      "filter": {
+        "section": "ch15_config_hierarchy"
+      },
+      "accepted_pages": [
+        144,
+        143
+      ]
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 126,
+      "section": "ch12_global_instructions",
+      "year": 2026
+    },
+    "question": {
+      "id": "q19",
+      "type": "metadata",
+      "split": "test",
+      "question": "Trong chương Global Instructions và cấu hình cá nhân, vì sao sách khuyên giữ hướng dẫn ngắn gọn?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 126,
+      "evidence_quote": "Keep instructions lean. Large language models perform best in the first 40 to 50 percent of the context window",
+      "expected_answer": "Vì LLM hoạt động tốt nhất trong 40–50% đầu của context window; CLAUDE.md hoặc global instructions dài dòng sẽ chiếm chỗ đó trước khi tác vụ bắt đầu.",
+      "filter": {
+        "section": "ch12_global_instructions"
+      },
+      "accepted_pages": [
+        126,
+        122
+      ]
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 218,
+      "section": "appendix_d_troubleshooting",
+      "year": 2026
+    },
+    "question": {
+      "id": "q20",
+      "type": "metadata",
+      "split": "test",
+      "question": "Theo phần Troubleshooting, khi một tác vụ Cowork bị treo thì cần làm gì?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 218,
+      "evidence_quote": "Click the Stop button in the Cowork interface. If no Stop button is visible, reload the application.",
+      "expected_answer": "Bấm nút Stop trong giao diện Cowork; nếu không thấy nút Stop thì tải lại ứng dụng, sau đó kiểm tra connector và kết nối mạng trước khi thử lại.",
+      "filter": {
+        "section": "appendix_d_troubleshooting"
+      }
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 151,
+      "section": "ch16_agent_teams",
+      "year": 2026
+    },
+    "question": {
+      "id": "q21",
+      "type": "dieu_kien_ngoai_le",
+      "split": "test",
+      "question": "Điều gì xảy ra nếu dùng Agent Teams với model Sonnet hoặc Haiku?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 151,
+      "evidence_quote": "If you try to use it with Sonnet or Haiku, you will get an error: the feature requires Opus 4.6 for the orchestrating agent.",
+      "expected_answer": "Sẽ báo lỗi, vì agent điều phối (orchestrator) của Agent Teams bắt buộc dùng Opus 4.6."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 168,
+      "section": "ch18_cowork_office",
+      "year": 2026
+    },
+    "question": {
+      "id": "q22",
+      "type": "dien_dat_lai",
+      "split": "test",
+      "question": "Tôi dùng Windows, có chạy được luồng Cowork phối hợp Excel và PowerPoint không?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 168,
+      "evidence_quote": "Windows support for Cowork + Office integration is not yet available.",
+      "expected_answer": "Chưa. Luồng Cowork + Office cần gói trả phí (Pro trở lên) và Claude Desktop trên macOS; Windows chưa được hỗ trợ."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 130,
+      "section": "ch13_safety_security",
+      "year": 2026
+    },
+    "question": {
+      "id": "q23",
+      "type": "truc_tiep",
+      "split": "test",
+      "question": "Khi Cowork kết hợp Chrome bất ngờ đề xuất một hành động không mong đợi, sách khuyên người dùng nên làm gì?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 130,
+      "evidence_quote": "Be skeptical when Cowork plus the Chrome integration proposes an unexpected action.",
+      "expected_answer": "Hãy hoài nghi, tạm dừng và tự hỏi hành động đó có khớp với yêu cầu ban đầu không, vì đó có thể là dấu hiệu prompt injection."
+    }
+  },
+  {
+    "page": {
+      "document_id": "master-claude-code-cowork-2026",
+      "source": "master-claude-code-and-cowork.pdf",
+      "page": 80,
+      "section": "ch08_ide_cicd",
+      "year": 2026
+    },
+    "question": {
+      "id": "q24",
+      "type": "truc_tiep",
+      "split": "test",
+      "question": "Cờ --non-interactive có tác dụng gì khi chạy Claude Code trong GitHub Actions?",
+      "gold_source_id": "master-claude-code-cowork-2026",
+      "gold_page": 80,
+      "evidence_quote": "This workflow uses the --non-interactive flag, which tells Claude Code to run without waiting for user input.",
+      "expected_answer": "Cho Claude Code chạy mà không chờ người dùng nhập (phù hợp CI/CD)."
+    }
+  }
+]

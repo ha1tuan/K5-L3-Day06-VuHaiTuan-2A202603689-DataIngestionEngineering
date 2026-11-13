@@ -1,0 +1,134 @@
+2026-11-13 14:08:21,581 INFO master-claude-code-and-cowork.pdf: 1/220 pages without text: [1]
+2026-11-13 14:08:21,627 INFO Skipping 1 pages without text: [1]
+2026-11-13 17:29:40,139 INFO master-claude-code-and-cowork.pdf: 1/220 pages without text: [1]
+2026-11-13 17:29:40,186 INFO Skipping 1 pages without text: [1]
+2026-11-13 17:29:40,187 INFO Loaded 219 content pages and 25 questions
+2026-11-13 17:30:00,448 INFO Wrote results to D:\VinUni\lab\lab6\K5-L3-Day06-2A202603689-DataIngestionEngineering\starter\results
+2026-11-13 18:56:28,959 INFO master-claude-code-and-cowork.pdf: 1/220 pages without text: [1]
+2026-11-13 18:56:28,960 INFO Loaded 220 physical pages, 215 content pages (excluded no-text [1], front matter [1, 2, 3, 4, 5])
+2026-11-13 18:56:28,992 WARNING q01: evidence_quote not found verbatim on gold page(s) [15]
+2026-11-13 18:56:28,993 WARNING q02: evidence_quote not found verbatim on gold page(s) [15]
+2026-11-13 18:56:28,993 WARNING q03: evidence_quote not found verbatim on gold page(s) [18]
+2026-11-13 18:56:28,993 WARNING q04: evidence_quote not found verbatim on gold page(s) [23]
+2026-11-13 18:56:28,993 WARNING q05: evidence_quote not found verbatim on gold page(s) [29]
+2026-11-13 18:56:28,993 WARNING q06: evidence_quote not found verbatim on gold page(s) [35]
+2026-11-13 18:56:28,993 WARNING q07: evidence_quote not found verbatim on gold page(s) [57]
+2026-11-13 18:56:28,993 WARNING q08: evidence_quote not found verbatim on gold page(s) [57]
+2026-11-13 18:56:28,993 WARNING q09: evidence_quote not found verbatim on gold page(s) [70]
+2026-11-13 18:56:28,993 WARNING q10: evidence_quote not found verbatim on gold page(s) [72]
+2026-11-13 18:56:28,993 WARNING q11: evidence_quote not found verbatim on gold page(s) [73]
+2026-11-13 18:56:28,993 WARNING q12: evidence_quote not found verbatim on gold page(s) [73]
+2026-11-13 18:56:28,993 WARNING q13: evidence_quote not found verbatim on gold page(s) [87]
+2026-11-13 18:56:28,993 WARNING q14: evidence_quote not found verbatim on gold page(s) [113]
+2026-11-13 18:56:28,993 WARNING q15: evidence_quote not found verbatim on gold page(s) [135]
+2026-11-13 18:56:28,993 WARNING q16: evidence_quote not found verbatim on gold page(s) [139]
+2026-11-13 18:56:28,993 WARNING q17: evidence_quote not found verbatim on gold page(s) [155]
+2026-11-13 18:56:28,993 WARNING q18: evidence_quote not found verbatim on gold page(s) [142, 143]
+2026-11-13 18:56:28,993 WARNING q19: evidence_quote not found verbatim on gold page(s) [121, 125]
+2026-11-13 18:56:28,993 WARNING q20: evidence_quote not found verbatim on gold page(s) [217]
+2026-11-13 18:56:28,993 WARNING q21: evidence_quote not found verbatim on gold page(s) [150]
+2026-11-13 18:56:28,993 WARNING q22: evidence_quote not found verbatim on gold page(s) [167]
+2026-11-13 18:56:28,993 WARNING q23: evidence_quote not found verbatim on gold page(s) [129]
+2026-11-13 18:56:28,993 WARNING q24: evidence_quote not found verbatim on gold page(s) [79]
+2026-11-13 18:56:28,993 INFO Loaded 24 questions (18 dev / 6 test, 4 with filter)
+2026-11-13 18:56:29,018 INFO Index A: {'chunk_count': 1162, 'total_chars': 391503, 'approx_tokens': 97875, 'min_chars': 7, 'median_chars': 373.5, 'mean_chars': 336.9, 'max_chars': 499}
+2026-11-13 18:56:29,018 INFO Index B: {'chunk_count': 556, 'total_chars': 391047, 'approx_tokens': 97761, 'min_chars': 25, 'median_chars': 759.0, 'mean_chars': 703.3, 'max_chars': 999}
+2026-11-13 18:56:29,730 INFO Index A: removed 965 chunks of documents no longer in the corpus
+2026-11-13 18:56:32,751 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:33,820 INFO [A] embedded + stored 100/1162 chunks
+2026-11-13 18:56:35,996 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:36,808 INFO [A] embedded + stored 200/1162 chunks
+2026-11-13 18:56:38,960 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:39,550 INFO [A] embedded + stored 300/1162 chunks
+2026-11-13 18:56:42,025 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:42,579 INFO [A] embedded + stored 400/1162 chunks
+2026-11-13 18:56:45,267 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:45,839 INFO [A] embedded + stored 500/1162 chunks
+2026-11-13 18:56:48,469 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:49,016 INFO [A] embedded + stored 600/1162 chunks
+2026-11-13 18:56:51,628 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:52,341 INFO [A] embedded + stored 700/1162 chunks
+2026-11-13 18:56:54,926 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:55,624 INFO [A] embedded + stored 800/1162 chunks
+2026-11-13 18:56:57,770 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:56:58,723 INFO [A] embedded + stored 900/1162 chunks
+2026-11-13 18:57:02,491 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:03,346 INFO [A] embedded + stored 1000/1162 chunks
+2026-11-13 18:57:05,356 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:06,430 INFO [A] embedded + stored 1100/1162 chunks
+2026-11-13 18:57:08,162 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:08,634 INFO [A] embedded + stored 1162/1162 chunks
+2026-11-13 18:57:08,681 INFO [A] IndexStats(strategy='A', embedding_model='gemini-embedding-2', total=1162, embedded=1162, unchanged=0, skipped_empty=0, removed=0, seconds=38.95)
+2026-11-13 18:57:08,781 INFO Index B: removed 514 chunks of documents no longer in the corpus
+2026-11-13 18:57:11,420 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:11,969 INFO [B] embedded + stored 100/556 chunks
+2026-11-13 18:57:14,605 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:15,266 INFO [B] embedded + stored 200/556 chunks
+2026-11-13 18:57:18,158 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:18,755 INFO [B] embedded + stored 300/556 chunks
+2026-11-13 18:57:21,870 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:22,442 INFO [B] embedded + stored 400/556 chunks
+2026-11-13 18:57:25,027 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:25,633 INFO [B] embedded + stored 500/556 chunks
+2026-11-13 18:57:27,496 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:27,840 INFO [B] embedded + stored 556/556 chunks
+2026-11-13 18:57:27,889 INFO [B] IndexStats(strategy='B', embedding_model='gemini-embedding-2', total=556, embedded=556, unchanged=0, skipped_empty=0, removed=0, seconds=19.11)
+2026-11-13 18:57:28,606 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:29,163 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:29,683 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:30,186 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:30,803 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:31,291 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:31,805 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:32,331 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:32,905 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:33,417 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:33,933 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:34,535 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:35,156 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:35,803 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:36,390 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:36,900 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:37,414 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:37,961 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:38,541 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:39,001 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:39,560 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:40,074 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:40,604 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:41,331 INFO HTTP Request: POST https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:batchEmbedContents "HTTP/1.1 200 OK"
+2026-11-13 18:57:42,630 INFO Strategy A: retrieved top-3 for 24 questions
+2026-11-13 18:57:43,783 INFO Strategy B: retrieved top-3 for 24 questions
+2026-11-13 18:57:44,890 INFO Strategy C: retrieved top-3 for 24 questions
+2026-11-13 18:57:44,911 INFO A: Hit@1 0/24, Evidence Hit@3 0/24
+2026-11-13 18:57:44,911 INFO B: Hit@1 0/24, Evidence Hit@3 0/24
+2026-11-13 18:57:44,911 INFO C: Hit@1 0/24, Evidence Hit@3 0/24
+2026-11-13 18:57:44,911 INFO Wrote results to D:\VinUni\lab\lab6\K5-L3-Day06-2A202603689-DataIngestionEngineering\starter\results
+2026-11-13 19:03:50,683 INFO master-claude-code-and-cowork.pdf: 1/220 pages without text: [1]
+2026-11-13 19:03:50,684 INFO Loaded 220 physical pages, 215 content pages (excluded no-text [1], front matter [1, 2, 3, 4, 5])
+2026-11-13 19:03:50,722 INFO Loaded 24 questions (18 dev / 6 test, 4 with filter)
+2026-11-13 19:03:50,758 INFO Index A: {'chunk_count': 1162, 'total_chars': 391503, 'approx_tokens': 97875, 'min_chars': 7, 'median_chars': 373.5, 'mean_chars': 336.9, 'max_chars': 499}
+2026-11-13 19:03:50,759 INFO Index B: {'chunk_count': 556, 'total_chars': 391047, 'approx_tokens': 97761, 'min_chars': 25, 'median_chars': 759.0, 'mean_chars': 703.3, 'max_chars': 999}
+2026-11-13 19:03:51,594 INFO [A] IndexStats(strategy='A', embedding_model='gemini-embedding-2', total=1162, embedded=0, unchanged=1162, skipped_empty=0, removed=0, seconds=0.25)
+2026-11-13 19:03:51,776 INFO [B] IndexStats(strategy='B', embedding_model='gemini-embedding-2', total=556, embedded=0, unchanged=556, skipped_empty=0, removed=0, seconds=0.13)
+2026-11-13 19:04:07,206 INFO Strategy A: retrieved top-3 for 24 questions
+2026-11-13 19:04:08,537 INFO Strategy B: retrieved top-3 for 24 questions
+2026-11-13 19:04:09,713 INFO Strategy C: retrieved top-3 for 24 questions
+2026-11-13 19:04:09,821 INFO A: Hit@1 11/24, Evidence Hit@3 15/24
+2026-11-13 19:04:09,822 INFO B: Hit@1 14/24, Evidence Hit@3 16/24
+2026-11-13 19:04:09,822 INFO C: Hit@1 14/24, Evidence Hit@3 16/24
+2026-11-13 19:04:09,822 INFO Wrote results to D:\VinUni\lab\lab6\K5-L3-Day06-2A202603689-DataIngestionEngineering\starter\results
+2026-11-13 19:04:50,142 INFO master-claude-code-and-cowork.pdf: 1/220 pages without text: [1]
+2026-11-13 19:04:50,144 INFO Loaded 220 physical pages, 215 content pages (excluded no-text [1], front matter [1, 2, 3, 4, 5])
+2026-11-13 19:04:50,151 INFO Loaded 24 questions (18 dev / 6 test, 4 with filter)
+2026-11-13 19:04:50,172 INFO Index A: {'chunk_count': 1162, 'total_chars': 391503, 'approx_tokens': 97875, 'min_chars': 7, 'median_chars': 373.5, 'mean_chars': 336.9, 'max_chars': 499}
+2026-11-13 19:04:50,173 INFO Index B: {'chunk_count': 556, 'total_chars': 391047, 'approx_tokens': 97761, 'min_chars': 25, 'median_chars': 759.0, 'mean_chars': 703.3, 'max_chars': 999}
+2026-11-13 19:04:50,751 INFO [A] IndexStats(strategy='A', embedding_model='gemini-embedding-2', total=1162, embedded=0, unchanged=1162, skipped_empty=0, removed=0, seconds=0.25)
+2026-11-13 19:04:50,937 INFO [B] IndexStats(strategy='B', embedding_model='gemini-embedding-2', total=556, embedded=0, unchanged=556, skipped_empty=0, removed=0, seconds=0.14)
+2026-11-13 19:05:07,039 INFO Strategy A: retrieved top-3 for 24 questions
+2026-11-13 19:05:08,085 INFO Strategy B: retrieved top-3 for 24 questions
+2026-11-13 19:05:09,229 INFO Strategy C: retrieved top-3 for 24 questions
+2026-11-13 19:05:09,329 INFO A: Hit@1 11/24, Evidence Hit@3 15/24
+2026-11-13 19:05:09,330 INFO B: Hit@1 14/24, Evidence Hit@3 16/24
+2026-11-13 19:05:09,330 INFO C: Hit@1 14/24, Evidence Hit@3 16/24
+2026-11-13 19:05:09,330 INFO Wrote results to D:\VinUni\lab\lab6\K5-L3-Day06-2A202603689-DataIngestionEngineering\starter\results
