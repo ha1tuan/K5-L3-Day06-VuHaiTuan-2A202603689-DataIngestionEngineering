@@ -7,7 +7,7 @@ to paid subscriptions specifically to use these tools. One Anthropic
 engineer, Boris Cherny, made the pattern public, documenting the
 unexpected wave of adoption across knowledge work professions. The
 company's leadership took notice. They began to see what their engineers
-had built not as a specialized tool for programmers, but as something",,
+had built not as a specialized tool for programmers, but as something",1,"Đầu chunk rõ chủ thể nhưng bị cắt giữa câu ở cuối ('but as something'); hiểu được ý chính về việc người không lập trình chuyển sang gói trả phí, thiếu phần kết luận."
 A,master-claude-code-cowork-2026,27,"Desktop for chat only. Cowork
 requires a paid subscription (Pro, Max, Team, or Enterprise).
 
@@ -21,7 +21,7 @@ Claude Code requires Node.js and either an active paid subscription
 or an Anthropic API key.
 
 Both tools read and operate on real files in your file system with your
-permission.",,
+permission.",2,"Trọn khối Key Takeaways, mỗi ý tự đứng được (Desktop vs Code, Cowork cần gói trả phí, Node.js)."
 A,master-claude-code-cowork-2026,48,"from 100,000 total downloads in
 November 2024 to over 8 million by April 2025 — roughly",master-claude-code-cowork-2026-p48-fixed-2,"MCP (Model Context Protocol) is an open standard Anthropic
 introduced in late 2024 for connecting Claude to external tools,
@@ -29,7 +29,7 @@ databases, and APIs. It has grown from 100,000 total downloads in
 November 2024 to over 8 million by April 2025 — roughly 80x growth
 in five months. As of early 2026, publicly listed MCP servers number in
 the thousands, with directories tracking the count daily as new servers
-appear. The ecosystem mirrors the early days of npm: fast-growing,",,
+appear. The ecosystem mirrors the early days of npm: fast-growing,",1,"Định nghĩa MCP và số liệu tăng trưởng trọn vẹn, nhưng câu cuối bị cắt ('fast-growing,')."
 A,master-claude-code-cowork-2026,69,"Deployment
 Completion
 This hook watches for deployment commands and sends a Slack
@@ -39,7 +39,7 @@ This hook watches for deployment commands and sends a Slack
 notification when they complete — useful for build pipelines or any task
 that takes time.
 
-Configuration in .claude/settings.json:",,
+Configuration in .claude/settings.json:",1,"Có tiêu đề và mô tả Hook Example 4 nhưng kết thúc ở 'Configuration in .claude/settings.json:', phần cấu hình nằm ở chunk sau."
 A,master-claude-code-cowork-2026,91,"that deliverables should be saved as .docx, there is no need to say
 it again at the",master-claude-code-cowork-2026-p91-fixed-2,"This is specific, actionable, and short.
 
@@ -48,12 +48,12 @@ Do not restate your global preferences here. If your global instructions
 specify that deliverables should be saved as .docx, there is no need to say
 it again at the project level. Project instructions add context; they do not
 replace the layer above them. Chapter 15 covers how these layers
-interact.",,
+interact.",2,"Đoạn về project instructions trọn ý; chỉ câu đầu 'This is specific...' là đuôi của đoạn trước, không ảnh hưởng ý chính."
 A,master-claude-code-cowork-2026,112,"plugin.json
 manifest, skill definitions, and slash command mappings, making them
 straightforward",master-claude-code-cowork-2026-p112-fixed-3,"Custom plugins follow a standard structure with a plugin.json
 manifest, skill definitions, and slash command mappings, making them
-straightforward to build and distribute.",,
+straightforward to build and distribute.",2,"Một câu hoàn chỉnh, tự hiểu được về cấu trúc plugin (plugin.json, skills, slash commands); ngắn nhưng không thiếu chủ thể."
 A,master-claude-code-cowork-2026,133,"reviewed Cowork's plan before clicking ""Run""?
 
 ☐
@@ -72,12 +72,12 @@ Am I using trusted MCP servers and plugins only?
 Am I reading every approval prompt, not just clicking ""Allow""?
 
 If you cannot check all five boxes, do not proceed. Review your
-setup or reconfigure permissions.",,
+setup or reconfigure permissions.",2,Đủ 5 mục checklist và câu kết 'If you cannot check all five boxes'; thiếu tiêu đề nhưng vẫn tự hiểu.
 A,master-claude-code-cowork-2026,156,"Teams sessions benefit from tight,
 well-scoped role definitions. The more precisely",master-claude-code-cowork-2026-p156-fixed-4,"The practical implication: Agent Teams sessions benefit from tight,
 well-scoped role definitions. The more precisely you define each agent's
 scope, the less cross-talk is needed, and the more of each agent's context
-window remains available for the actual work.",,
+window remains available for the actual work.",2,"Đoạn 'The practical implication' trọn câu, tự hiểu được về việc định nghĩa vai trò cho Agent Teams."
 A,master-claude-code-cowork-2026,177,"different
 formats, and you need to merge them into one consistent table.
 
@@ -86,7 +86,7 @@ research papers on machine learning, and you need to extract every
 mention of a specific algorithm, record the page number and the
 surrounding context, and compile it into a single document. Or you have
 spreadsheet data from three different sources that use three different
-formats, and you need to merge them into one consistent table.",,
+formats, and you need to merge them into one consistent table.",2,"Đoạn mô tả bài toán (47 PDF, gộp bảng) trọn vẹn và tự hiểu."
 A,master-claude-code-cowork-2026,198,"to
 maintain control over systems that act on your behalf. The investment
 applies",master-claude-code-cowork-2026-p198-fixed-4,"The reader has now spent the preceding chapters developing exactly
@@ -95,7 +95,7 @@ to grant and revoke permissions, how to verify outputs, and how to
 maintain control over systems that act on your behalf. The investment
 applies to any agentic system you encounter in the future—newer
 versions of Claude, tools from other AI companies, agents built on other
-architectures. The principles do not change.",,
+architectures. The principles do not change.",1,Câu đầu 'developing exactly that skill' tham chiếu đoạn trước (kỹ năng ủy quyền) không có trong chunk; còn lại trọn câu.
 B,master-claude-code-cowork-2026,6,"were switching
 to paid subscriptions specifically to use these tools. One Anthropic
 engineer,",master-claude-code-cowork-2026-p6-paragraph-1,"Anthropic's engineers noticed. The company's data showed clear
@@ -113,7 +113,7 @@ Anthropic released Cowork as a research preview — an expanded
 version of Claude Code designed explicitly for anyone doing knowledge
 work. Cowork brought the same autonomous agent architecture into a
 web interface, pairing it with Claude's language capabilities. It could
-read and write to the web, modify documents, send emails, execute",,
+read and write to the web, modify documents, send emails, execute",1,"Giữ trọn đoạn về adoption và quyết định ra mắt Cowork, nhưng bị cắt cuối ('send emails, execute') do chạm giới hạn 1000 ký tự."
 B,master-claude-code-cowork-2026,27,"Desktop for chat only. Cowork
 requires a paid subscription (Pro, Max, Team, or Enterprise).
 
@@ -135,7 +135,7 @@ Both tools read and operate on real files in your file system with your
 permission.
 
 Cowork in Claude Desktop is the simpler entry point for new users;
-Claude Code is better for scripting and automation.",,
+Claude Code is better for scripting and automation.",2,Gồm đoạn giới thiệu và toàn bộ Key Takeaways; tự hiểu và đủ ngữ cảnh.
 B,master-claude-code-cowork-2026,48,"from 100,000 total downloads in
 November 2024 to over 8 million by April 2025 — roughly",master-claude-code-cowork-2026-p48-paragraph-1,"MCP (Model Context Protocol) is an open standard Anthropic
 introduced in late 2024 for connecting Claude to external tools,
@@ -150,7 +150,7 @@ The protocol works by exposing a set of resources, tools, and
 prompts to Claude. A resource is a piece of data — a database table, a
 file, an API response. A tool is a function Claude can call — write to a
 database, create a GitHub pull request, send an email. A prompt is a pre-written instruction template that Claude can invoke to accomplish a
-structured task. When you run Claude Code with an MCP server active,",,
+structured task. When you run Claude Code with an MCP server active,",1,"Hai đoạn về MCP đầy đủ ý, nhưng câu cuối bị cắt ('When you run Claude Code with an MCP server active,')."
 B,master-claude-code-cowork-2026,69,"Deployment
 Completion
 This hook watches for deployment commands and sends a Slack
@@ -175,7 +175,7 @@ This hook watches for deployment commands and sends a Slack
 notification when they complete — useful for build pipelines or any task
 that takes time.
 
-Configuration in .claude/settings.json:",,
+Configuration in .claude/settings.json:",1,Mở đầu giữa một đoạn script bash không có phần đầu; mục Hook Example 4 kết thúc ở 'Configuration in .claude/settings.json:' mà thiếu cấu hình.
 B,master-claude-code-cowork-2026,91,"that deliverables should be saved as .docx, there is no need to say
 it again at the",master-claude-code-cowork-2026-p91-paragraph-1,"Keep project instructions focused on what is true about this project.
 Do not restate your global preferences here. If your global instructions
@@ -192,7 +192,7 @@ local folder is the most common approach: if a client's brand guide, style
 sheet, and specification documents all live in a folder on your desktop,
 link that folder once and Claude can read from it in every subsequent
 session. Because you are linking the live folder rather than uploading a
-snapshot, changes to those files are picked up automatically.",,
+snapshot, changes to those files are picked up automatically.",2,"Đoạn project instructions và mục Context đều trọn ý, tự hiểu."
 B,master-claude-code-cowork-2026,112,"plugin.json
 manifest, skill definitions, and slash command mappings, making them
 straightforward",master-claude-code-cowork-2026-p112-paragraph-1,"Plugins bundle connectors, skills, and commands together so
@@ -204,7 +204,7 @@ ones.
 
 Custom plugins follow a standard structure with a plugin.json
 manifest, skill definitions, and slash command mappings, making them
-straightforward to build and distribute.",,
+straightforward to build and distribute.",2,"Hai đoạn về plugins (bundle connector/skill/command và cấu trúc plugin.json) trọn ý, có ngữ cảnh."
 B,master-claude-code-cowork-2026,133,"reviewed Cowork's plan before clicking ""Run""?
 
 ☐
@@ -232,7 +232,7 @@ protect yourself by being skeptical of unexpected actions. MCP servers
 are attack vectors, but install only from trusted sources and review
 permissions carefully. Approval fatigue is a human problem, and
 discipline is the cure. File safety is a matter of backups and permissions.
-Some tasks are simply not suited for Cowork.",,
+Some tasks are simply not suited for Cowork.",1,Checklist thiếu mục đầu tiên ('backed up the files') trong khi câu kết nói 'all five boxes'; phần tóm tắt chương phía sau trọn ý.
 B,master-claude-code-cowork-2026,156,"Teams sessions benefit from tight,
 well-scoped role definitions. The more precisely",master-claude-code-cowork-2026-p156-paragraph-2,"The practical implication: Agent Teams sessions benefit from tight,
 well-scoped role definitions. The more precisely you define each agent's
@@ -258,7 +258,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and Opus
 4.6.
 
 Use Agent Teams for complex, interdependent work. Use subagents
-for independent tasks.",,
+for independent tasks.",2,"Đoạn practical implication và phần tóm tắt chương Agent Teams trọn ý, tự hiểu."
 B,master-claude-code-cowork-2026,177,"different
 formats, and you need to merge them into one consistent table.
 
@@ -277,7 +277,7 @@ research papers on machine learning, and you need to extract every
 mention of a specific algorithm, record the page number and the
 surrounding context, and compile it into a single document. Or you have
 spreadsheet data from three different sources that use three different
-formats, and you need to merge them into one consistent table.",,
+formats, and you need to merge them into one consistent table.",2,"Mở chương 19 có tiêu đề, đoạn dẫn và mô tả bài toán; trọn ý."
 B,master-claude-code-cowork-2026,198,"to
 maintain control over systems that act on your behalf. The investment
 applies",master-claude-code-cowork-2026-p198-paragraph-1,"Competency in knowledge work now increasingly means thinking
@@ -295,4 +295,4 @@ to grant and revoke permissions, how to verify outputs, and how to
 maintain control over systems that act on your behalf. The investment
 applies to any agentic system you encounter in the future—newer
 versions of Claude, tools from other AI companies, agents built on other
-architectures. The principles do not change.",,
+architectures. The principles do not change.",2,Có cả đoạn định nghĩa kỹ năng ủy quyền nên câu 'developing exactly that skill' có ngữ cảnh; trọn ý.

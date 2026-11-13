@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingestion Dashboard</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --panel-2: #f0f2f5; --border: #dfe3e8;
+  --text: #1b1f24; --muted: #5f6b7a; --accent: #3b5bdb; --accent-soft: #e7ecff;
+  --good: #1f8a4c; --good-soft: #dcf3e5; --mid: #a86a12; --mid-soft: #fbf0d9;
+  --bad: #c92a2a; --bad-soft: #fde4e4; --mark: #fff1a8;
+  --c1: #3b5bdb; --c2: #94a8f0; --seg1: #c5d0f5; --seg2: #9fb1ee;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111418; --panel: #191d23; --panel-2: #20252c; --border: #2d333b;
+    --text: #e6e9ed; --muted: #95a0ad; --accent: #8ea4ff; --accent-soft: #232c4d;
+    --good: #5cc98a; --good-soft: #17301f; --mid: #e3b25c; --mid-soft: #362a14;
+    --bad: #ff8585; --bad-soft: #3a1c1c; --mark: #5a4a12;
+    --c1: #8ea4ff; --c2: #46558f; --seg1: #2c3766; --seg2: #3d4c8a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111418; --panel: #191d23; --panel-2: #20252c; --border: #2d333b;
+  --text: #e6e9ed; --muted: #95a0ad; --accent: #8ea4ff; --accent-soft: #232c4d;
+  --good: #5cc98a; --good-soft: #17301f; --mid: #e3b25c; --mid-soft: #362a14;
+  --bad: #ff8585; --bad-soft: #3a1c1c; --mark: #5a4a12;
+  --c1: #8ea4ff; --c2: #46558f; --seg1: #2c3766; --seg2: #3d4c8a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+header { background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 5; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 6px; flex-wrap: wrap; }
+h1 { font-size: 19px; margin: 0; }
+.meta { color: var(--muted); font-size: 13px; display: flex; gap: 4px 16px; flex-wrap: wrap; padding-bottom: 6px; }
+.meta b { color: var(--text); font-weight: 600; }
+nav { display: flex; gap: 2px; overflow-x: auto; }
+nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 9px 14px; color: var(--muted);
+  font: inherit; font-weight: 500; cursor: pointer; white-space: nowrap; }
+nav button:hover { color: var(--text); }
+nav button.on { color: var(--accent); border-bottom-color: var(--accent); }
+nav .sep { width: 1px; background: var(--border); margin: 8px 6px; }
+main { padding: 20px 0 64px; }
+section.tab { display: none; } section.tab.on { display: block; }
+h2 { font-size: 17px; margin: 32px 0 6px; scroll-margin-top: 140px; } h2:first-child { margin-top: 0; }
+h3 { font-size: 14px; margin: 0 0 8px; }
+.lead { color: var(--muted); margin: 0 0 14px; max-width: 900px; }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.grid { display: grid; gap: 12px; }
+.grid > *, .stage > *, .cols > *, .impact > *, .flow > *, .stepper > * { min-width: 0; }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); }
+.muted { color: var(--muted); } .small { font-size: 12px; }
+.mono { font-family: var(--mono); font-size: 12.5px; }
+code { font-family: var(--mono); font-size: 12px; background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+.btn, select, input[type=search], input[type=text] { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border);
+  border-radius: 7px; padding: 6px 10px; }
+.btn { cursor: pointer; text-decoration: none; display: inline-block; } .btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--panel); border-color: var(--accent); font-weight: 600; }
+.btn:disabled { opacity: .5; cursor: default; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.seg button { border: 0; background: none; font: inherit; padding: 5px 13px; cursor: pointer; color: var(--muted); }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.toolbar input[type=search] { flex: 1 1 220px; min-width: 0; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 12px; padding: 1px 8px; border-radius: 99px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); white-space: nowrap; }
+.chip.bad { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+.chip.good { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.chip.mid { background: var(--mid-soft); color: var(--mid); border-color: transparent; }
+.chip.acc { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+a { color: var(--accent); }
+a.chip { text-decoration: none; cursor: pointer; }
+dl.kv { display: grid; grid-template-columns: max-content 1fr; gap: 5px 16px; margin: 0; }
+dl.kv dt { color: var(--muted); } dl.kv dd { margin: 0; word-break: break-word; }
+.empty { color: var(--muted); font-style: italic; }
+.err { background: var(--bad-soft); color: var(--bad); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+.note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+
+/* pipeline stepper */
+.stepper { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 8px; }
+.step { position: relative; text-align: left; font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 12px 12px 14px; cursor: pointer; }
+.step:hover { border-color: var(--accent); }
+.step:not(:last-child)::after { content: "→"; position: absolute; right: -11px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 13px; background: var(--bg); line-height: 1; z-index: 1; }
+.step .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--panel);
+  font-size: 12px; font-weight: 700; margin-right: 6px; }
+.step .t { font-weight: 600; }
+.step .k { font-size: 16px; font-weight: 700; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.step .k2 { font-size: 12px; color: var(--muted); }
+.step .st { position: absolute; top: 10px; right: 10px; font-size: 12px; }
+.metaband { background: var(--accent-soft); color: var(--accent); border-radius: 8px; padding: 8px 12px; font-size: 13px; margin-bottom: 4px; }
+.stage { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.checks li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; align-items: start; }
+.checks .ic { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+.ic.ok { background: var(--good-soft); color: var(--good); } .ic.no { background: var(--bad-soft); color: var(--bad); } .ic.na { background: var(--panel-2); color: var(--muted); }
+.checks .d { font-size: 12px; color: var(--muted); }
+.timeline { display: flex; height: 26px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.timeline div { height: 100%; border-right: 1px solid var(--panel); }
+.timeline div:nth-child(odd) { background: var(--seg1); } .timeline div:nth-child(even) { background: var(--seg2); }
+.timeline div.fm { background: var(--panel-2); }
+.timeline div.hl { background: var(--c1); }
+.tl-axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 3px; }
+.chunk-sample { white-space: pre-wrap; font-size: 12.5px; background: var(--panel-2); border-radius: 6px; padding: 8px 10px; max-height: 160px; overflow: auto; }
+
+/* bars */
+.track { height: 10px; background: var(--panel-2); border-radius: 3px; overflow: hidden; min-width: 60px; }
+.fill { height: 100%; border-radius: 3px; background: var(--c1); }
+.cellbar { display: grid; gap: 3px; min-width: 110px; }
+.cellbar .v { font-variant-numeric: tabular-nums; font-size: 13px; }
+.cellbar .v b { font-size: 14px; }
+.legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-top: 10px; flex-wrap: wrap; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+table.data { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data th, table.data td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+table.data th { background: var(--panel-2); font-size: 12px; color: var(--muted); font-weight: 600; }
+table.data tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.c, th.c { text-align: center; }
+td.best { background: var(--good-soft); }
+td.best .v b { color: var(--good); }
+tr.group td { background: var(--panel-2); font-weight: 600; font-size: 12px; color: var(--muted); }
+.rk { display: inline-block; min-width: 40px; padding: 1px 6px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; }
+.rk.r1 { background: var(--good); color: var(--panel); }
+.rk.r2, .rk.r3 { background: var(--good-soft); color: var(--good); }
+.rk.miss { background: var(--bad-soft); color: var(--bad); }
+tr.click { cursor: pointer; } tr.click:hover td { background: var(--panel-2); }
+
+/* evaluation */
+.crit { margin-top: 28px; }
+.crit-head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 4px; }
+.crit-head h2 { margin: 0; }
+.crit-num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; margin-right: 8px; font-size: 14px; }
+.req { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
+.verdict { border-left: 3px solid var(--accent); padding: 6px 12px; background: var(--panel); border-radius: 0 8px 8px 0; margin-top: 10px; font-size: 13px; }
+.flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 8px; align-items: stretch; }
+.flow .arrow { display: grid; place-items: center; text-align: center; font-size: 11px; color: var(--muted); max-width: 120px; }
+.flow .arrow b { display: block; font-size: 18px; color: var(--accent); }
+.strat-card .s { font-size: 22px; font-weight: 800; }
+.impact { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); }
+.delta.up { color: var(--good); font-weight: 600; } .delta.down { color: var(--bad); font-weight: 600; } .delta.eq { color: var(--muted); }
+.decision { border: 2px solid var(--accent); }
+.dist { display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: var(--panel-2); min-width: 90px; }
+.dist span { height: 100%; }
+
+/* questions + grading */
+.q { margin-bottom: 10px; padding: 0; overflow: hidden; }
+.q > summary { list-style: none; cursor: pointer; padding: 12px 16px; display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; }
+.q > summary::-webkit-details-marker { display: none; }
+.q > summary:hover { background: var(--panel-2); }
+.qid { font-family: var(--mono); font-weight: 700; margin-right: 8px; }
+.ranks { display: flex; gap: 4px; align-items: center; }
+.q-body { border-top: 1px solid var(--border); padding: 14px 16px; }
+.gold { background: var(--panel-2); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; }
+.cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.col h3 { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.hit { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 8px; background: var(--panel); }
+.hit.is-hit { border-color: var(--good); box-shadow: inset 3px 0 0 var(--good); }
+.hit-head { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; font-size: 12px; margin-bottom: 6px; }
+.hit-text { white-space: pre-wrap; font-size: 12.5px; max-height: 180px; overflow: auto; background: var(--panel-2); padding: 8px; border-radius: 6px; }
+mark { background: var(--mark); color: inherit; border-radius: 2px; }
+.grade { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.grade input[type=text] { flex: 1 1 200px; min-width: 0; font-size: 13px; padding: 5px 8px; }
+.score button { min-width: 34px; font-weight: 600; }
+.score button.on[data-v="0"] { background: var(--bad-soft); color: var(--bad); }
+.score button.on[data-v="1"] { background: var(--mid-soft); color: var(--mid); }
+.score button.on[data-v="2"] { background: var(--good-soft); color: var(--good); }
+.yn button.on[data-v="y"] { background: var(--good-soft); color: var(--good); }
+.yn button.on[data-v="n"] { background: var(--bad-soft); color: var(--bad); }
+.savebar { position: sticky; bottom: 12px; z-index: 4; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 16px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.savebar .msg { flex: 1 1 200px; font-size: 13px; }
+.log { font-family: var(--mono); font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 0; overflow-x: auto; }
+.log div { padding: 1px 14px; white-space: pre; }
+.log .WARNING { color: var(--mid); } .log .ERROR, .log .CRITICAL { color: var(--bad); }
+.log .ts { color: var(--muted); }
+pre.raw { white-space: pre-wrap; font-family: var(--mono); font-size: 12.5px; margin: 0; }
+input.cell { width: 100%; min-width: 160px; font-size: 12.5px; padding: 4px 6px; }
+@media (max-width: 900px) {
+  .stepper { grid-template-columns: 1fr 1fr; }
+  .step::after { display: none; }
+  .stage { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: 1fr; }
+  .flow .arrow { max-width: none; }
+}
+@media (max-width: 640px) {
+  .stepper { grid-template-columns: 1fr; }
+  .q > summary { grid-template-columns: 1fr; }
+  .impact { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <h1>Day 06 · Data Ingestion Engineering</h1>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="reload" title="Đọc lại các file kết quả">↻ Tải lại</button>
+        <button class="btn" id="theme" title="Đổi giao diện sáng/tối">◐</button>
+      </div>
+    </div>
+    <div class="meta" id="meta"></div>
+    <nav id="nav">
+      <button data-tab="pipeline">① Pipeline</button>
+      <button data-tab="eval">② So sánh &amp; đánh giá</button>
+      <span class="sep"></span>
+      <button data-tab="grade">Chấm thủ công</button>
+      <button data-tab="questions">Câu hỏi &amp; top-3</button>
+      <button data-tab="raw">Log &amp; file gốc</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="errors"></div>
+  <section class="tab" id="tab-pipeline"></section>
+  <section class="tab" id="tab-eval"></section>
+  <section class="tab" id="tab-grade"></section>
+  <section class="tab" id="tab-questions"></section>
+  <section class="tab" id="tab-raw"></section>
+</main>
+
+<script>
+/* =====================================================================
+   Data sources (paths are relative to /starter/dashboard/)
+   ===================================================================== */
+const RES = "../results/", ART = "../../artifacts/";
+const FILES = {
+  summary: RES + "summary.json", ingest: RES + "ingest_stats.json", config: RES + "run_config.json",
+  traces: RES + "traces.jsonl", coherence: RES + "manual_coherence.csv", grounding: RES + "manual_grounding.csv",
+  log: RES + "run.log", summaryMd: RES + "summary.md", explog: ART + "experiment_log.csv",
+};
+const SAVE_AS = { coherence: { name: "manual_coherence.csv", bom: true, eol: "\r\n" },
+                  grounding: { name: "manual_grounding.csv", bom: true, eol: "\r\n" },
+                  explog: { name: "experiment_log.csv", bom: false, eol: "\r\n" } };
+const D = {};
+const dirty = { coherence: false, grounding: false, explog: false };
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const pct = (x) => x == null || isNaN(x) ? "—" : (x * 100).toFixed(1).replace(/\.0$/, "") + "%";
+const num = (x, d = 2) => x == null || isNaN(x) ? "—" : (+x).toFixed(d);
+const fmt = (x) => typeof x === "number" ? (Number.isInteger(x) ? x.toLocaleString("en-US") : x.toLocaleString("en-US", { maximumFractionDigits: 4 })) : esc(x);
+const store = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+const uniq = (a) => [...new Set(a)];
+const sum = (a) => a.reduce((x, y) => x + (+y || 0), 0);
+const mean = (a) => a.length ? sum(a) / a.length : null;
+
+function parseCSV(t) {
+  t = t.replace(/^﻿/, "");
+  const rows = []; let row = [], f = "", q = false;
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (q) { if (c === '"') { if (t[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
+    else if (c === '"') q = true;
+    else if (c === ",") { row.push(f); f = ""; }
+    else if (c === "\n") { row.push(f); rows.push(row); row = []; f = ""; }
+    else if (c !== "\r") f += c;
+  }
+  if (f !== "" || row.length) { row.push(f); rows.push(row); }
+  const head = rows.shift() || [];
+  return { head, rows: rows.filter(r => r.length > 1 || r[0] !== "").map(r => Object.fromEntries(head.map((k, i) => [k, r[i] ?? ""]))) };
+}
+function toCSV(head, rows, eol) {
+  const q = (v) => { v = String(v ?? ""); return /[",\r\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  return [head.map(q).join(","), ...rows.map(r => head.map(h => q(r[h])).join(","))].join(eol) + eol;
+}
+
+async function load() {
+  if (Object.values(dirty).some(Boolean) && !confirm("Có điểm chấm chưa lưu. Tải lại sẽ mất các thay đổi đó. Tiếp tục?")) return;
+  Object.keys(dirty).forEach(k => dirty[k] = false);
+  const errs = [];
+  await Promise.all(Object.entries(FILES).map(async ([k, f]) => {
+    try {
+      const r = await fetch(f, { cache: "no-store" });
+      if (!r.ok) throw new Error(r.status + " " + r.statusText);
+      const t = await r.text();
+      D[k + "Raw"] = t;
+      if (f.endsWith(".jsonl")) D[k] = t.split(/\r?\n/).filter(Boolean).map(l => JSON.parse(l));
+      else if (f.endsWith(".json")) D[k] = JSON.parse(t);
+      else if (f.endsWith(".csv")) D[k] = parseCSV(t);
+      else D[k] = t;
+    } catch (e) { errs.push(`<b>${esc(f.replace(/^(\.\.\/)+/, ""))}</b>: ${esc(e.message)}`); D[k] = null; D[k + "Raw"] = null; }
+  }));
+  $("#errors").innerHTML = errs.length
+    ? `<div class="err">Không đọc được ${errs.length} file:<br>${errs.join("<br>")}${location.protocol === "file:" ? "<br><br>Trang đang mở trực tiếp từ ổ đĩa (file://), trình duyệt chặn đọc file. Hãy chạy <code>python scripts/serve_results.py</code> trong thư mục <code>starter/</code>." : ""}</div>` : "";
+  derive();
+  renderAll();
+}
+
+/* =====================================================================
+   Derived data
+   ===================================================================== */
+const X = {};
+function derive() {
+  X.ss = Object.keys(D.summary || {}).sort();
+  if (!X.ss.length) X.ss = uniq((D.traces || []).map(t => t.strategy)).sort();
+  X.cfg = (s) => D.config?.strategies?.[s] || {};
+  X.idx = (s) => X.cfg(s).index ?? s;
+  const m = new Map();
+  for (const t of D.traces || []) {
+    if (!m.has(t.question_id)) m.set(t.question_id, { q: t, s: {} });
+    m.get(t.question_id).s[t.strategy] = t;
+  }
+  X.Q = [...m.values()];
+  X.hits = (D.traces || []).flatMap(t => (t.hits || []).map(h => ({ ...h, strategy: t.strategy, split: t.split, qid: t.question_id })));
+  X.types = uniq(X.Q.map(x => x.q.type));
+  // last run's log lines
+  const lines = (D.log || "").split(/\r?\n/).filter(Boolean);
+  let start = 0;
+  lines.forEach((l, i) => { if (/pages without text/.test(l) && (i === 0 || !/pages without text/.test(lines[i - 1]))) start = i; });
+  X.lastLog = lines.slice(start);
+}
+const stat = (s, split) => D.summary?.[s]?.[split];
+const typeLabel = { truc_tiep: "Trực tiếp", dien_dat_lai: "Diễn đạt lại", dieu_kien_ngoai_le: "Điều kiện / ngoại lệ", metadata: "Metadata / filter" };
+const tl = (k) => typeLabel[k] || k;
+const failLabel = { wrong_page: "Sai trang", evidence_incomplete: "Thiếu evidence", wrong_source: "Sai nguồn", filter_violation: "Vi phạm filter" };
+const fl = (k) => failLabel[k] || k;
+
+function rankBadge(t) {
+  if (!t) return `<span class="rk">—</span>`;
+  const r = t.first_hit_rank;
+  if (r) return `<span class="rk r${Math.min(r, 3)}" title="${esc(t.strategy)}: hit ở rank ${r}">#${r}</span>`;
+  return `<span class="rk miss" title="${esc(t.strategy)}: ${esc(fl(t.failure || "miss"))}">✕</span>`;
+}
+function kv(obj) {
+  return `<dl class="kv">${Object.entries(obj).filter(([, v]) => v !== undefined).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v !== null && typeof v === "object" ? `<span class="mono">${esc(JSON.stringify(v))}</span>` : (typeof v === "string" && v.startsWith("<") ? v : fmt(v))}</dd>`).join("")}</dl>`;
+}
+function checks(items) {
+  return `<ul class="checks">${items.map(([ok, t, d]) => `<li><span class="ic ${ok === true ? "ok" : ok === false ? "no" : "na"}">${ok === true ? "✓" : ok === false ? "✕" : "–"}</span><div>${t}${d ? `<div class="d">${d}</div>` : ""}</div></li>`).join("")}</ul>`;
+}
+function frac(a, n, rate) {
+  if (!n) return `<span class="muted">N/A</span>`;
+  const r = rate ?? a / n;
+  return `<div class="cellbar"><div class="v"><b>${a}/${n}</b> · ${pct(r)}</div><div class="track"><div class="fill" style="width:${r * 100}%"></div></div></div>`;
+}
+function highlight(text, quotes) {
+  for (const q of quotes || []) {
+    if (!q) continue;
+    const words = q.trim().split(/\s+/).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    if (!words.length) continue;
+    const m = new RegExp(words.join("\\s+"), "i").exec(text);
+    if (m) return esc(text.slice(0, m.index)) + `<mark>${esc(m[0])}</mark>` + esc(text.slice(m.index + m[0].length));
+  }
+  return esc(text);
+}
+function stratDesc(s) {
+  const c = X.cfg(s);
+  if (!c.chunking) return "";
+  return `${c.chunking === "fixed_size" ? "Fixed-size" : c.chunking === "by_paragraph" ? "Theo đoạn" : c.chunking} · ${c.size ?? c.max_size} ký tự${c.overlap ? ` · overlap ${c.overlap}` : ""}${c.filter ? " · + filter" : ""}`;
+}
+
+/* =====================================================================
+   Header
+   ===================================================================== */
+function renderMeta() {
+  const c = D.config; if (!c) { $("#meta").innerHTML = ""; return; }
+  const when = c.run_started_utc ? new Date(c.run_started_utc).toLocaleString("vi-VN") : "—";
+  const dev = X.Q.filter(x => x.q.split === "dev").length, test = X.Q.filter(x => x.q.split === "test").length;
+  $("#meta").innerHTML = [
+    ["Run", when], ["Tài liệu", c.document_id], ["Embedding", `${c.embedding_model} · ${c.dimensions}d`],
+    ["Chiến lược", X.ss.join(" / ")], ["Câu hỏi", `${dev} dev + ${test} test`], ["Top-k", c.top_k],
+  ].map(([k, v]) => `<span>${k}: <b>${esc(v)}</b></span>`).join("");
+}
+
+/* =====================================================================
+   ① PIPELINE
+   ===================================================================== */
+function renderPipeline() {
+  const el = $("#tab-pipeline");
+  const c = D.config || {}, I = D.ingest || {}, corp = c.corpus || {};
+  const idx = Object.keys(I).sort();
+  const hits = X.hits, meta0 = hits[0]?.metadata || {};
+  const secs = c.sections || [];
+  const pages = corp.physical_pages || meta0.page_count;
+
+  // per-page facts seen in the trace (one entry per distinct page)
+  const pageFacts = new Map();
+  for (const h of hits) if (!pageFacts.has(h.page)) pageFacts.set(h.page, h.metadata || {});
+  const pf = [...pageFacts.values()];
+  const rawSum = sum(pf.map(m => m.raw_char_count)), normSum = sum(pf.map(m => m.char_count));
+  const allNormalized = hits.length && hits.every(h => h.metadata?.normalized);
+  const ocrPages = [...pageFacts.entries()].filter(([, m]) => m.needs_ocr).map(([p]) => p);
+  const totalRows = sum(idx.map(k => I[k].stored_rows ?? I[k].chunk_count));
+  const models = uniq(idx.map(k => I[k].embedding_model).concat(c.embedding_model ? [c.embedding_model] : []));
+  const noDup = idx.length && idx.every(k => I[k].stored_rows == null || I[k].stored_rows === I[k].chunk_count);
+  const hasCore = hits.length && hits.every(h => h.document_id && h.source && h.page != null);
+  const filterField = hits.length && hits.every(h => h.metadata?.section) ? "section" : null;
+
+  const steps = [
+    { id: "read", t: "Đọc dữ liệu", k: `${pages ?? "—"} trang`, k2: `${meta0.extractor || "?"} · ${meta0.file_name || ""}`, ok: (corp.content_pages ?? 0) >= 30 },
+    { id: "norm", t: "Chuẩn hóa", k: `${corp.content_pages ?? "—"} trang nội dung`, k2: `${secs.length} section từ PDF outline`, ok: !!allNormalized },
+    { id: "chunk", t: "Chia chunk", k: idx.map(k => `${k}: ${I[k].chunk_count}`).join(" · "), k2: "kèm metadata nguồn/trang/section", ok: !!(hasCore && filterField) },
+    { id: "embed", t: "Tạo vector", k: c.embedding_model || "—", k2: `${c.dimensions ?? "?"} chiều · 1 model cho mọi chiến lược`, ok: models.length === 1 },
+    { id: "store", t: "Lưu & kiểm tra", k: `${totalRows.toLocaleString("en-US")} vector`, k2: "pgvector · HNSW · cosine", ok: !!noDup },
+  ];
+
+  let h = `<p class="lead">Pipeline biến tài liệu thành kho tri thức truy xuất được. Mỗi bước bên dưới lấy số liệu từ <code>starter/results/</code> và đối chiếu với yêu cầu trong GUIDE.md. Bấm vào một bước để tới phần chi tiết.</p>
+  <div class="stepper">${steps.map((s, i) => `<button class="step" data-go="st-${s.id}"><span class="st">${s.ok ? `<span class="chip good">✓</span>` : `<span class="chip mid">kiểm tra</span>`}</span>
+    <div><span class="n">${i + 1}</span><span class="t">${s.t}</span></div><div class="k">${esc(s.k)}</div><div class="k2">${esc(s.k2)}</div></button>`).join("")}</div>
+  <div class="metaband">Metadata đi cùng mỗi chunk: <b>document_id · source · page</b>${filterField ? ` · <b>${filterField}</b> (trường filter)` : ""}${meta0.year ? " · year" : ""} → truy vết được nguồn và lọc được phạm vi.</div>`;
+
+  // 1. read
+  h += `<h2 id="st-read">1 · Đọc dữ liệu</h2><p class="lead">Đọc PDF, giữ ID tài liệu, nguồn và số trang cho từng đơn vị nội dung; ghi lại trang không đọc được.</p>
+  <div class="stage"><div class="panel">${kv({
+    "File": meta0.file_name, "Đường dẫn": c.pdf, "document_id": c.document_id, "Tiêu đề": meta0.title,
+    "Năm": corp.year != null ? `${corp.year} (nguồn: ${corp.year_source || "?"})` : undefined,
+    "Trang vật lý": pages, "Thư viện đọc": meta0.extractor, "Trang không có text": (corp.excluded_no_text_pages || []).join(", ") || "không có",
+  })}</div><div class="panel"><h3>Đối chiếu yêu cầu</h3>${checks([
+    [(corp.content_pages ?? 0) >= 30, `≥ 30 trang nội dung hữu ích`, `${corp.content_pages ?? "?"} trang nội dung / ${pages ?? "?"} trang vật lý`],
+    [hasCore || null, "Mỗi chunk giữ document_id, source, page", hasCore ? `kiểm tra trên ${hits.length} bản ghi top-3 trong trace` : "không có trace"],
+    [/pages without text/.test(D.log || "") || null, "Ghi log trang không đọc được", X.lastLog.find(l => /pages without text/.test(l))?.replace(/^\S+ \S+ \w+ /, "")],
+  ])}</div></div>`;
+
+  // 2. normalize
+  const fm = new Set(corp.excluded_front_matter_pages || []);
+  h += `<h2 id="st-norm">2 · Chuẩn hóa</h2><p class="lead">Làm sạch Unicode và khoảng trắng, loại trang không phải nội dung (bìa, mục lục…), gắn section theo PDF outline.</p>
+  <div class="stage"><div class="panel">${kv({
+    "Trang nội dung": corp.content_pages, "Loại: không có text": (corp.excluded_no_text_pages || []).join(", ") || "—",
+    "Loại: front matter": [...fm].join(", ") || "—", "Nguồn section": corp.section_source,
+    "Đã chuẩn hóa": allNormalized ? "có (normalized = true trên mọi chunk)" : "không rõ",
+    "Ký tự raw → chuẩn hóa": pf.length ? `${rawSum.toLocaleString("en-US")} → ${normSum.toLocaleString("en-US")} (${pct((normSum - rawSum) / rawSum)}) trên ${pf.length} trang có trong trace` : undefined,
+    "Trang cần OCR": ocrPages.length ? ocrPages.join(", ") : "không có",
+  })}</div><div class="panel"><h3>Đối chiếu yêu cầu</h3>${checks([
+    [!!allNormalized || null, "Chuẩn hóa Unicode, giữ liên kết về trang", null],
+    [fm.size ? true : null, "Loại trang bìa / mục lục khỏi số trang tính", fm.size ? `${fm.size} trang front matter` : null],
+    [ocrPages.length ? false : true, "Không có trang scan cần OCR", ocrPages.length ? `trang ${ocrPages.join(", ")}` : "needs_ocr = false"],
+    [(c.question_warnings || []).length ? false : true, "Evidence của câu hỏi tìm thấy trên trang gold", (c.question_warnings || []).length ? `${c.question_warnings.length} cảnh báo` : "question_warnings rỗng"],
+  ])}</div></div>`;
+  if (secs.length && pages) {
+    h += `<div class="panel" style="margin-top:12px"><h3>Bản đồ section theo trang (${secs.length} section)</h3>
+    <div class="timeline" id="timeline">${secs.map((s, i) => {
+      const end = i + 1 < secs.length ? secs[i + 1].start_page - 1 : pages;
+      return `<div class="${s.section === "front_matter" ? "fm" : ""}" style="width:${(end - s.start_page + 1) / pages * 100}%" title="tr. ${s.start_page}–${end}: ${esc(s.title)}"></div>`;
+    }).join("")}</div><div class="tl-axis"><span>tr. 1</span><span>tr. ${pages}</span></div>
+    <details style="margin-top:10px"><summary class="small muted" style="cursor:pointer">Bảng section · trang · câu hỏi có gold</summary>${sectionTable(secs, pages)}</details></div>`;
+  }
+
+  // 3. chunk
+  h += `<h2 id="st-chunk">3 · Chia chunk &amp; gắn metadata</h2><p class="lead">Hai cách chia trên cùng corpus. ${X.ss.filter(s => X.idx(s) !== s).map(s => `Chiến lược ${s} dùng lại chunk và vector của index ${X.idx(s)}, chỉ thêm filter.`).join(" ")}</p>
+  <div class="grid g2">${idx.map(k => {
+    const s = I[k], strat = X.ss.find(x => X.idx(x) === k && !X.cfg(x).filter) || k;
+    const maxMax = Math.max(...idx.map(j => I[j].max_chars || 0));
+    const L = (v) => (v / maxMax * 100).toFixed(2) + "%";
+    const sample = X.hits.find(x => x.strategy === strat && x.rank === 1);
+    return `<div class="panel"><h3>Index ${esc(k)} <span class="muted small">${esc(stratDesc(strat))}</span></h3>
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+        ${[["Chunk", s.chunk_count], ["Tổng ký tự", s.total_chars], ["~Token", s.approx_tokens]].map(([l, v]) => `<div><div style="font-size:18px;font-weight:700">${fmt(v)}</div><div class="small muted">${l}</div></div>`).join("")}
+      </div>
+      <div class="small muted">Độ dài chunk (ký tự)</div>
+      <div style="position:relative;height:22px;background:var(--panel-2);border-radius:4px;margin:4px 0">
+        <div style="position:absolute;left:${L(s.min_chars)};width:calc(${L(s.max_chars)} - ${L(s.min_chars)});top:8px;height:6px;background:var(--c2);border-radius:3px"></div>
+        <div title="median ${s.median_chars}" style="position:absolute;left:${L(s.median_chars)};top:2px;width:3px;height:18px;background:var(--c1);border-radius:2px"></div>
+      </div>
+      <div class="small muted">min ${s.min_chars} · median ${s.median_chars} · mean ${s.mean_chars} · max ${s.max_chars}</div>
+      ${sample ? `<div class="small muted" style="margin:10px 0 4px">Ví dụ chunk (${esc(sample.chunk_id)}, tr. ${sample.page})</div><div class="chunk-sample">${esc(sample.text)}</div>` : ""}
+    </div>`;
+  }).join("")}</div>`;
+  h += `<div class="stage" style="margin-top:12px"><div>${metadataTable(filterField)}</div><div class="panel"><h3>Đối chiếu yêu cầu</h3>${checks([
+    [idx.length >= 2 || null, "Ít nhất hai cách chia chunk", idx.map(k => `${k}: ${stratDesc(X.ss.find(x => X.idx(x) === k) || k)}`).join("<br>")],
+    [idx.length >= 2 ? Math.abs(I[idx[0]].total_chars - I[idx[1]].total_chars) / I[idx[0]].total_chars < 0.02 : null, "Cùng corpus cho mọi chiến lược", idx.map(k => `${k}: ${fmt(I[k].total_chars)} ký tự`).join(" · ")],
+    [hasCore || null, "Metadata tối thiểu: document_id, source, page", null],
+    [!!filterField || null, "Ít nhất một trường filter có ích", filterField ? `<code>${filterField}</code> lấy từ PDF outline, ${secs.length} giá trị` : null],
+  ])}</div></div>`;
+
+  // 4. embed
+  h += `<h2 id="st-embed">4 · Tạo vector</h2><p class="lead">Một embedding model thật, cùng số chiều, dùng chung cho mọi chiến lược. Document và query dùng task type riêng.</p>
+  <div class="stage"><div class="panel">${kv({
+    "Model": c.embedding_model, "Số chiều": c.dimensions,
+    "Task type (document)": c.embedding_task_types?.documents, "Task type (query)": c.embedding_task_types?.queries,
+    "Thời gian embed query": c.embed_query_seconds != null ? `${c.embed_query_seconds} s cho ${c.question_count} câu hỏi` : undefined,
+  })}
+  <div class="tbl-wrap" style="margin-top:12px"><table class="data"><thead><tr><th>Index</th><th class="num">Tổng chunk</th><th class="num">Embed lần này</th><th class="num">Giữ nguyên</th><th class="num">Bỏ qua (rỗng)</th></tr></thead><tbody>
+  ${idx.map(k => `<tr><td><b>${esc(k)}</b></td><td class="num">${fmt(I[k].total)}</td><td class="num">${fmt(I[k].embedded)}</td><td class="num">${fmt(I[k].unchanged)}</td><td class="num">${fmt(I[k].skipped_empty)}</td></tr>`).join("")}
+  </tbody></table></div></div>
+  <div class="panel"><h3>Đối chiếu yêu cầu</h3>${checks([
+    [models.length === 1, "Cùng một model cho mọi chiến lược", models.join(", ")],
+    [c.embedding_task_types ? true : null, "Query và document xử lý tương thích", c.embedding_task_types ? `${c.embedding_task_types.documents} / ${c.embedding_task_types.queries}` : null],
+    [idx.every(k => I[k].embedded === 0) ? true : null, "Nạp lại không embed lại chunk không đổi", idx.every(k => I[k].embedded === 0) ? "lần chạy này: 0 chunk embed mới, tất cả dùng lại vector cũ" : "lần chạy này có embed mới"],
+  ])}</div></div>`;
+
+  // 5. store
+  const retr = X.lastLog.filter(l => /retrieved top-|Hit@1/.test(l));
+  h += `<h2 id="st-store">5 · Lưu &amp; kiểm tra</h2><p class="lead">Lưu vector cùng metadata vào vector store, truy xuất top-${c.top_k ?? "k"} và kiểm tra nguồn.</p>
+  <div class="stage"><div class="panel">${kv({ "Vector store": c.vector_store, "Top-k": c.top_k })}
+  <div class="tbl-wrap" style="margin-top:12px"><table class="data"><thead><tr><th>Index</th><th class="num">Chunk</th><th class="num">Dòng trong DB</th><th class="num">Xóa (tài liệu cũ)</th><th class="num">Thời gian ingest</th></tr></thead><tbody>
+  ${idx.map(k => `<tr><td><b>${esc(k)}</b></td><td class="num">${fmt(I[k].chunk_count)}</td><td class="num">${fmt(I[k].stored_rows)}</td><td class="num">${fmt((I[k].removed ?? 0) + (I[k].removed_stale_documents ?? 0))}</td><td class="num">${fmt(I[k].seconds)} s</td></tr>`).join("")}
+  </tbody></table></div>
+  ${retr.length ? `<div class="small muted" style="margin:12px 0 4px">Log truy xuất (lần chạy gần nhất)</div><div class="log">${retr.map(l => `<div>${esc(l.replace(/^\S+ /, ""))}</div>`).join("")}</div>` : ""}
+  </div><div class="panel"><h3>Đối chiếu yêu cầu</h3>${checks([
+    [noDup || null, "Nạp lại không nhân đôi", idx.map(k => `${k}: ${fmt(I[k].stored_rows)} dòng = ${fmt(I[k].chunk_count)} chunk`).join("<br>")],
+    [/cosine/i.test(c.vector_store || "") || null, "Cùng store và metric cosine", c.vector_store],
+    [/approx|exact/i.test(c.vector_store || "") || null, "Ghi rõ exact hay approximate", /approx/i.test(c.vector_store || "") ? "approximate (HNSW)" : null],
+    [X.ss.length >= 3, "Truy xuất top-k cho mọi câu hỏi, mọi chiến lược", `${X.ss.length} chiến lược × ${X.Q.length} câu = ${(D.traces || []).length} trace`],
+  ])}</div></div>`;
+
+  el.innerHTML = h;
+  $$(".step", el).forEach(b => b.onclick = () => document.getElementById(b.dataset.go)?.scrollIntoView({ behavior: "smooth" }));
+  $$("a[data-q]", el).forEach(a => a.onclick = (e) => { e.preventDefault(); openQuestion(a.dataset.q); });
+}
+function sectionTable(secs, pages) {
+  const gold = new Map();
+  for (const x of X.Q) for (const g of x.q.gold || []) for (const p of g.pages || []) { if (!gold.has(p)) gold.set(p, new Set()); gold.get(p).add(x.q.question_id); }
+  return `<div class="tbl-wrap" style="margin-top:8px"><table class="data"><thead><tr><th class="num">Trang</th><th>section</th><th>Tiêu đề</th><th>Câu hỏi</th></tr></thead><tbody>
+  ${secs.map((s, i) => {
+    const end = i + 1 < secs.length ? secs[i + 1].start_page - 1 : pages;
+    const qs = new Set(); for (let p = s.start_page; p <= end; p++) (gold.get(p) || []).forEach(q => qs.add(q));
+    return `<tr><td class="num">${s.start_page}${end !== s.start_page ? "–" + end : ""}</td><td class="mono">${esc(s.section)}</td><td>${esc(s.title)}</td>
+      <td>${[...qs].sort().map(q => `<a href="#" class="chip acc" data-q="${esc(q)}">${esc(q)}</a>`).join(" ")}</td></tr>`;
+  }).join("")}</tbody></table></div>`;
+}
+function metadataTable(filterField) {
+  const purpose = { document_id: "truy vết tài liệu", source: "truy vết file nguồn", page: "truy vết trang · chấm Hit", section: "trường filter (chiến lược C)",
+    section_title: "hiển thị chương", year: "filter tiềm năng", page_label: "nhãn trang in", chunk_index: "vị trí chunk trong trang",
+    char_start: "vị trí ký tự", char_end: "vị trí ký tự", strategy: "phân biệt index", extractor: "tái lập", normalized: "tái lập", needs_ocr: "kiểm lỗi" };
+  const idx = uniq(X.ss.map(X.idx));
+  const ex = Object.fromEntries(idx.map(k => [k, X.hits.find(h => X.idx(h.strategy) === k)]));
+  const fields = uniq(["document_id", "source", "page", ...idx.flatMap(k => Object.keys(ex[k]?.metadata || {}))]);
+  const val = (h, f) => h ? (["document_id", "source", "page"].includes(f) ? h[f] : h.metadata?.[f]) : undefined;
+  const order = (f) => purpose[f] ? (["document_id", "source", "page"].includes(f) ? 0 : f === filterField ? 1 : 2) : 3;
+  fields.sort((a, b) => order(a) - order(b));
+  return `<div class="tbl-wrap"><table class="data"><thead><tr><th>Trường</th>${idx.map(k => `<th>Ví dụ index ${esc(k)}</th>`).join("")}<th>Dùng để</th></tr></thead><tbody>
+    ${fields.map(f => `<tr><td class="mono">${esc(f)}${f === filterField ? ` <span class="chip acc">filter</span>` : ""}</td>${idx.map(k => { const v = val(ex[k], f); return `<td class="small">${v === undefined ? `<span class="muted">—</span>` : esc(typeof v === "string" && v.length > 60 ? v.slice(0, 60) + "…" : v)}</td>`; }).join("")}<td class="small muted">${esc(purpose[f] || "kỹ thuật")}</td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+/* =====================================================================
+   ② EVALUATION
+   ===================================================================== */
+function coherenceStats(s) {
+  const sheet = D.coherence; if (!sheet) return null;
+  const rows = sheet.rows.filter(r => r.strategy === X.idx(s));
+  const scores = rows.map(r => (r.coherence_score_0_2 || "").trim()).filter(v => v !== "").map(Number);
+  // boundary heuristic: starts like a sentence and ends with terminal punctuation
+  const proxy = rows.map(r => {
+    const t = (r.chunk_text || "").trim();
+    const startOk = /^[\p{Lu}\p{N}"“'(\[#*•\-–—]/u.test(t);
+    const endOk = /[.!?:;)\]"”’]$/.test(t);
+    return (startOk ? 1 : 0) + (endOk ? 1 : 0);
+  });
+  return { n: rows.length, graded: scores.length, mean: mean(scores), dist: [0, 1, 2].map(v => scores.filter(x => x === v).length), proxy: mean(proxy) };
+}
+function groundingStats(s) {
+  const sheet = D.grounding; if (!sheet) return null;
+  const rows = sheet.rows.filter(r => r.strategy === s);
+  const scores = rows.map(r => (r.grounding_score_0_2 || "").trim()).filter(v => v !== "").map(Number);
+  const yn = rows.flatMap(r => [1, 2, 3].map(i => (r[`top${i}_metadata_correct_y_n`] || "").trim().toLowerCase())).filter(v => v);
+  return { n: rows.length, graded: scores.length, mean: mean(scores), dist: [0, 1, 2].map(v => scores.filter(x => x === v).length),
+    proxy: rows.filter(r => r.evidence_hit_at_3_proxy === "True").length, metaChecked: yn.length, metaOk: yn.filter(v => v === "y" || v === "yes").length, metaTotal: rows.length * 3 };
+}
+function metaAuto(s) {
+  const ts = (D.traces || []).filter(t => t.strategy === s && t.split === "test");
+  const recs = ts.flatMap(t => t.hits || []);
+  const full = recs.filter(h => h.document_id && h.source && h.page != null && h.metadata?.section);
+  return { n: recs.length, full: full.length, q: ts.length };
+}
+function distBar(d) {
+  const t = sum(d); if (!t) return `<span class="muted small">chưa chấm</span>`;
+  const col = ["var(--bad)", "var(--mid)", "var(--good)"];
+  return `<div class="dist" title="0: ${d[0]} · 1: ${d[1]} · 2: ${d[2]}">${d.map((v, i) => `<span style="width:${v / t * 100}%;background:${col[i]}"></span>`).join("")}</div><div class="small muted">0: ${d[0]} · 1: ${d[1]} · 2: ${d[2]}</div>`;
+}
+function bestOf(values, higher = true) {
+  const v = values.filter(x => x != null && !isNaN(x));
+  if (!v.length) return null;
+  return higher ? Math.max(...v) : Math.min(...v);
+}
+function deltaTxt(a, b, fmtFn = (x) => x, unit = "") {
+  if (a == null || b == null) return `<span class="delta eq">—</span>`;
+  const d = b - a;
+  return `<span class="delta ${d > 0 ? "up" : d < 0 ? "down" : "eq"}">${d > 0 ? "+" : ""}${fmtFn(d)}${unit}</span>`;
+}
+
+function renderEval() {
+  const el = $("#tab-eval");
+  if (!D.summary) { el.innerHTML = `<p class="empty">Không có summary.json</p>`; return; }
+  const ss = X.ss, c = D.config || {}, I = D.ingest || {};
+  const dev = X.Q.filter(x => x.q.split === "dev"), test = X.Q.filter(x => x.q.split === "test");
+  const filt = X.Q.filter(x => x.q.filter);
+
+  let h = `<p class="lead">Cùng corpus, cùng embedding model, cùng bộ câu hỏi cho cả ${ss.length} chiến lược. Chọn cấu hình trên <b>dev</b>, rồi báo kết quả <b>test</b> sau khi đã cố định. Đánh giá theo năm tiêu chí của BENCHMARK.md.</p>
+  <div class="grid g3" style="margin-bottom:12px">
+    <div class="panel"><h3>Đầu vào chung</h3>${kv({ "Corpus": `${c.corpus?.content_pages ?? "?"} trang nội dung`, "Model": `${c.embedding_model} · ${c.dimensions}d`, "Store": "pgvector · cosine", "Top-k": c.top_k })}</div>
+    <div class="panel"><h3>Bộ câu hỏi</h3>${kv({ "Dev": `${dev.length} câu`, "Test": `${test.length} câu`, "Có filter": `${filt.length} câu (dev ${filt.filter(x => x.q.split === "dev").length} · test ${filt.filter(x => x.q.split === "test").length})`,
+      "Loại câu": X.types.map(t => `${tl(t)} ${X.Q.filter(x => x.q.type === t).length}`).join(" · ") })}</div>
+    <div class="panel"><h3>Mục lục</h3><div class="chips" style="flex-direction:column;align-items:flex-start">
+      ${[["c1", "① Độ chính xác truy xuất"], ["c2", "② Tính mạch lạc của chunk"], ["c3", "③ Tính hữu dụng của metadata"], ["c4", "④ Chất lượng grounding"], ["c5", "⑤ Tác động của chiến lược dữ liệu"], ["c6", "Kết luận & chọn cấu hình"], ["c7", "Nhật ký thí nghiệm"]]
+        .map(([id, t]) => `<a class="chip" href="#" data-go="${id}">${t}</a>`).join("")}</div></div>
+  </div>`;
+
+  // strategy flow
+  if (ss.length >= 2) {
+    const why = (a, b) => {
+      const ca = X.cfg(a), cb = X.cfg(b);
+      if (ca.chunking !== cb.chunking || (ca.size ?? ca.max_size) !== (cb.size ?? cb.max_size)) return "đổi cách chia chunk";
+      if (!!ca.filter !== !!cb.filter) return "thêm metadata filter";
+      return "thay đổi cấu hình";
+    };
+    h += `<div class="flow">${ss.map((s, i) => `${i ? `<div class="arrow"><div><b>→</b>${esc(why(ss[i - 1], s))}</div></div>` : ""}
+      <div class="panel strat-card"><div class="s">${esc(s)}</div><div class="small">${esc(stratDesc(s))}</div><div class="small muted">index ${esc(X.idx(s))}${X.cfg(s).filter ? ` · filter: ${esc(X.cfg(s).filter)}` : " · không lọc"}</div></div>`).join("")}</div>`;
+  }
+
+  // ① accuracy
+  const splits = ["dev", "test", "all"];
+  const best = {};
+  for (const sp of splits) for (const m of ["hit_at_1_rate", "hit_at_3_rate"]) best[sp + m] = bestOf(ss.map(s => stat(s, sp)?.[m]));
+  h += `<div class="crit" id="c1"><div class="crit-head"><h2><span class="crit-num">1</span>Độ chính xác truy xuất</h2></div>
+  <p class="req">Hit@1 và Evidence Hit@3 trên cùng bộ câu hỏi. Một hit khi chunk thuộc đúng nguồn/trang gold và chứa đủ evidence. Ô xanh là tốt nhất trong cột.</p>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>Chiến lược</th>${splits.map(sp => `<th>Hit@1 · ${sp}</th><th>Evidence Hit@3 · ${sp}</th>`).join("")}<th class="num">Mean top-1 score</th></tr></thead><tbody>
+  ${ss.map(s => `<tr><td><b>${esc(s)}</b><div class="small muted">${esc(stratDesc(s))}</div></td>${splits.map(sp => {
+    const st = stat(s, sp) || {};
+    return ["hit_at_1", "hit_at_3"].map(m => `<td class="${st[m + "_rate"] === best[sp + m + "_rate"] ? "best" : ""}">${frac(st[m], st.n, st[m + "_rate"])}</td>`).join("");
+  }).join("")}<td class="num">${num(stat(s, "all")?.mean_top1_score, 4)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="panel"><h3>Lỗi (tất cả câu)</h3><div class="tbl-wrap"><table class="data"><thead><tr><th>Chiến lược</th>${uniq(ss.flatMap(s => Object.keys(stat(s, "all")?.failures || {}))).map(f => `<th class="num">${esc(fl(f))}</th>`).join("")}<th class="num">Trượt Hit@3</th></tr></thead><tbody>
+      ${(() => { const fs = uniq(ss.flatMap(s => Object.keys(stat(s, "all")?.failures || {}))); return ss.map(s => { const st = stat(s, "all") || {}; return `<tr><td><b>${esc(s)}</b></td>${fs.map(f => `<td class="num">${st.failures?.[f] ?? 0}</td>`).join("")}<td class="num">${st.n - st.hit_at_3}</td></tr>`; }).join(""); })()}
+    </tbody></table></div><p class="note">Sai trang: không chunk nào trong top-3 thuộc trang gold. Thiếu evidence: đúng trang nhưng chunk không chứa đủ đoạn evidence (thường do evidence bị cắt qua 2 chunk).</p></div>
+    <div class="panel"><h3>Evidence Hit@3 theo loại câu hỏi</h3><div class="tbl-wrap"><table class="data"><thead><tr><th>Loại</th><th class="num">N</th>${ss.map(s => `<th class="num">${esc(s)}</th>`).join("")}</tr></thead><tbody>
+      ${X.types.map(t => { const qs = X.Q.filter(x => x.q.type === t); const vals = ss.map(s => qs.filter(x => x.s[s]?.hit_at_3).length); const b = Math.max(...vals);
+        return `<tr><td>${esc(tl(t))}</td><td class="num">${qs.length}</td>${vals.map(v => `<td class="num ${v === b && vals.some(o => o !== b) ? "best" : ""}">${v}/${qs.length}</td>`).join("")}</tr>`; }).join("")}
+    </tbody></table></div></div>
+  </div>
+  <h3 style="margin-top:16px">Kết quả từng câu <span class="muted small">(#rank = rank đầu tiên trúng evidence, ✕ = trượt; bấm để xem top-3)</span></h3>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>ID</th><th>Split</th><th>Loại</th><th>Câu hỏi</th>${ss.map(s => `<th class="c">${esc(s)}</th>`).join("")}</tr></thead><tbody>
+  ${["dev", "test"].map(sp => `<tr class="group"><td colspan="${4 + ss.length}">${sp} · ${X.Q.filter(x => x.q.split === sp).length} câu</td></tr>` + X.Q.filter(x => x.q.split === sp).map(x => `<tr class="click" data-q="${esc(x.q.question_id)}"><td class="mono">${esc(x.q.question_id)}</td><td>${esc(x.q.split)}</td><td class="small muted">${esc(tl(x.q.type))}</td>
+    <td>${esc(x.q.question)}${x.q.filter ? ` <span class="chip acc">filter</span>` : ""}</td>${ss.map(s => `<td class="c">${rankBadge(x.s[s])}</td>`).join("")}</tr>`).join("")).join("")}
+  </tbody></table></div></div>`;
+
+  // ② coherence
+  const coh = Object.fromEntries(ss.map(s => [s, coherenceStats(s)]));
+  const cohIdx = uniq(ss.map(X.idx));
+  h += `<div class="crit" id="c2"><div class="crit-head"><h2><span class="crit-num">2</span>Tính mạch lạc của chunk</h2></div>
+  <p class="req">Chấm thủ công cùng 10 vị trí nguồn cho mỗi chiến lược, thang 0–2: 0 = cắt giữa ý, 1 = hiểu một phần, 2 = tự hiểu được và giữ trọn ý.</p>
+  ${D.coherence ? `<div class="tbl-wrap"><table class="data"><thead><tr><th>Index</th><th>Chiến lược</th><th class="num">Đã chấm</th><th class="num">Điểm TB /2</th><th>Phân bố</th><th class="num">Proxy ranh giới câu /2</th></tr></thead><tbody>
+  ${cohIdx.map(k => { const s = ss.find(x => X.idx(x) === k), st = coh[s]; const bm = bestOf(cohIdx.map(j => coh[ss.find(x => X.idx(x) === j)]?.mean)); const bp = bestOf(cohIdx.map(j => coh[ss.find(x => X.idx(x) === j)]?.proxy));
+    return `<tr><td><b>${esc(k)}</b></td><td>${ss.filter(x => X.idx(x) === k).join(", ")}</td><td class="num">${st.graded}/${st.n}</td><td class="num ${st.mean != null && st.mean === bm ? "best" : ""}">${num(st.mean)}</td><td>${distBar(st.dist)}</td><td class="num ${st.proxy === bp ? "best" : ""}">${num(st.proxy)}</td></tr>`; }).join("")}
+  </tbody></table></div>
+  <p class="note">Proxy ranh giới câu: +1 nếu chunk bắt đầu như đầu câu, +1 nếu kết thúc bằng dấu câu. Đây chỉ là gợi ý tự động, <b>không thay chấm tay</b>. ${coh[ss[0]]?.graded ? "" : `Chưa có điểm thủ công: <a href="#" data-tabgo="grade" data-sub="coherence">chấm ở tab Chấm thủ công →</a>`}</p>` : `<p class="empty">Không có manual_coherence.csv</p>`}</div>`;
+
+  // ③ metadata
+  const gs = Object.fromEntries(ss.map(s => [s, groundingStats(s)]));
+  const ma = Object.fromEntries(ss.map(s => [s, metaAuto(s)]));
+  h += `<div class="crit" id="c3"><div class="crit-head"><h2><span class="crit-num">3</span>Tính hữu dụng của metadata</h2></div>
+  <p class="req">Kiểm tra source, page và trường lọc trong top-3 của các câu test; tỷ lệ tuân thủ filter trên các câu có filter (N/A nếu không có câu filter).</p>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>Chiến lược</th><th>Đủ trường (tự động, test × top-3)</th><th>Đúng (chấm tay)</th><th>Filter compliant · dev</th><th>Filter compliant · test</th><th class="num">Filter được áp dụng</th></tr></thead><tbody>
+  ${ss.map(s => { const d = stat(s, "dev") || {}, t = stat(s, "test") || {}, a = stat(s, "all") || {}; const g = gs[s];
+    return `<tr><td><b>${esc(s)}</b></td><td>${frac(ma[s].full, ma[s].n)}</td>
+    <td>${g ? (g.metaChecked ? frac(g.metaOk, g.metaChecked) + `<div class="small muted">đã kiểm ${g.metaChecked}/${g.metaTotal} bản ghi</div>` : `<span class="chip mid">chưa chấm</span>`) : "—"}</td>
+    <td class="${d.filter_questions && d.filter_compliant === d.filter_questions ? "best" : ""}">${frac(d.filter_compliant, d.filter_questions)}</td>
+    <td class="${t.filter_questions && t.filter_compliant === t.filter_questions ? "best" : ""}">${frac(t.filter_compliant, t.filter_questions)}</td>
+    <td class="num">${a.filter_applied ?? 0}/${a.filter_questions ?? 0}</td></tr>`; }).join("")}
+  </tbody></table></div>
+  ${filt.length ? `<h3 style="margin-top:16px">Các câu có filter: section của từng chunk top-3</h3>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>ID</th><th>Filter</th>${ss.map(s => `<th>${esc(s)}</th>`).join("")}</tr></thead><tbody>
+  ${filt.map(x => `<tr class="click" data-q="${esc(x.q.question_id)}"><td class="mono">${esc(x.q.question_id)} <span class="chip">${esc(x.q.split)}</span></td><td class="mono small">${esc(Object.entries(x.q.filter).map(([k, v]) => `${k}=${v}`).join(", "))}</td>
+    ${ss.map(s => { const t = x.s[s]; if (!t) return "<td>—</td>"; const fk = Object.keys(x.q.filter);
+      return `<td><div class="chips">${(t.hits || []).map(hh => { const ok = fk.every(k => String(hh.metadata?.[k]) === String(x.q.filter[k])); return `<span class="chip ${ok ? "good" : "bad"}" title="${esc(hh.metadata?.section_title || "")}">#${hh.rank} ${ok ? "✓" : "✕ " + esc(hh.metadata?.section || "?")}</span>`; }).join("")}</div>
+      <div class="small muted" style="margin-top:4px">${t.applied_filter ? "đã lọc" : "không lọc"} · ${t.filter_compliant ? "tuân thủ" : "không tuân thủ"} · ${t.first_hit_rank ? "hit #" + t.first_hit_rank : "trượt"}</div></td>`; }).join("")}</tr>`).join("")}
+  </tbody></table></div>` : ""}
+  <p class="note">Ví dụ hữu ích: <code>page</code> cho phép truy vết và chấm Hit tự động; <code>section</code> (từ PDF outline) giúp C loại chunk ngoài chương được hỏi. Hạn chế: section chỉ đúng tới mức chương và phụ thuộc bookmark của PDF; câu hỏi phải tự mang giá trị filter trước khi truy xuất.</p></div>`;
+
+  // ④ grounding
+  h += `<div class="crit" id="c4"><div class="crit-head"><h2><span class="crit-num">4</span>Chất lượng grounding</h2></div>
+  <p class="req">Trên các câu test, top-3 có đủ bằng chứng để trả lời và truy nguồn không? 0 = không có bằng chứng, 1 = có nhưng thiếu điều kiện/ngữ cảnh, 2 = đủ. Đánh giá bằng chứng truy xuất, không phải độ chính xác câu trả lời của LLM.</p>
+  ${D.grounding ? `<div class="tbl-wrap"><table class="data"><thead><tr><th>Chiến lược</th><th class="num">Đã chấm</th><th class="num">Điểm TB /2</th><th>Phân bố</th><th>Proxy Evidence Hit@3</th></tr></thead><tbody>
+  ${ss.map(s => { const g = gs[s]; const bm = bestOf(ss.map(j => gs[j]?.mean)); const bp = bestOf(ss.map(j => gs[j]?.proxy));
+    return `<tr><td><b>${esc(s)}</b></td><td class="num">${g.graded}/${g.n}</td><td class="num ${g.mean != null && g.mean === bm ? "best" : ""}">${num(g.mean)}</td><td>${distBar(g.dist)}</td><td class="${g.proxy === bp ? "best" : ""}">${frac(g.proxy, g.n)}</td></tr>`; }).join("")}
+  </tbody></table></div>
+  ${groundingMatrix()}
+  <p class="note">Proxy Evidence Hit@3 chỉ là tín hiệu tự động, không thay nhãn thủ công. ${gs[ss[0]]?.graded ? "" : `<a href="#" data-tabgo="grade" data-sub="grounding">Chấm grounding ở tab Chấm thủ công →</a>`}</p>` : `<p class="empty">Không có manual_grounding.csv</p>`}</div>`;
+
+  // ⑤ impact
+  const pairs = [];
+  for (let i = 1; i < ss.length; i++) pairs.push([ss[i - 1], ss[i]]);
+  h += `<div class="crit" id="c5"><div class="crit-head"><h2><span class="crit-num">5</span>Tác động của chiến lược dữ liệu</h2></div>
+  <p class="req">So sánh từng cặp chỉ khác nhau một yếu tố: kết quả, chất lượng, tài nguyên, câu được/mất và đánh đổi. Mẫu nhỏ: chênh lệch 1 câu = ${pct(1 / (dev.length || 1))} trên dev, ${pct(1 / (test.length || 1))} trên test.</p>
+  <div class="impact">${pairs.map(([a, b]) => impactCard(a, b, coh, gs)).join("")}</div>
+  <h3 style="margin-top:16px">Tài nguyên</h3>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>Chiến lược</th><th>Index</th><th class="num">Chunk</th><th class="num">Median ký tự</th><th class="num">~Token</th><th class="num">Embed lần này</th><th class="num">Ingest (s)</th></tr></thead><tbody>
+  ${ss.map(s => { const k = X.idx(s), i = I[k] || {}; return `<tr><td><b>${esc(s)}</b></td><td>${esc(k)}${k !== s ? ` <span class="muted small">(dùng chung)</span>` : ""}</td><td class="num">${fmt(i.chunk_count)}</td><td class="num">${fmt(i.median_chars)}</td><td class="num">${fmt(i.approx_tokens)}</td><td class="num">${fmt(i.embedded)}</td><td class="num">${fmt(i.seconds)}</td></tr>`; }).join("")}
+  </tbody></table></div><p class="note">Chi phí API không được ghi trong results; hãy bổ sung vào báo cáo (lần chạy này không embed document mới).</p></div>`;
+
+  // decision
+  h += decisionBlock(coh, gs, ma);
+  h += expLogBlock();
+
+  el.innerHTML = h;
+  $$("tr[data-q]", el).forEach(tr => tr.onclick = () => openQuestion(tr.dataset.q));
+  $$("a[data-go]", el).forEach(a => a.onclick = (e) => { e.preventDefault(); document.getElementById(a.dataset.go)?.scrollIntoView({ behavior: "smooth" }); });
+  $$("a[data-tabgo]", el).forEach(a => a.onclick = (e) => { e.preventDefault(); if (a.dataset.sub) { gradeSheet = a.dataset.sub; store.set("gradeSheet", gradeSheet); renderGrade(); } showTab(a.dataset.tabgo); window.scrollTo(0, 0); });
+  bindExpLog();
+}
+function groundingMatrix() {
+  const sheet = D.grounding; if (!sheet) return "";
+  const qids = uniq(sheet.rows.map(r => r.question_id));
+  return `<div class="tbl-wrap" style="margin-top:12px"><table class="data"><thead><tr><th>Câu test</th>${X.ss.map(s => `<th class="c">${esc(s)} · proxy</th><th class="c">${esc(s)} · điểm</th>`).join("")}</tr></thead><tbody>
+  ${qids.map(q => { const qq = X.Q.find(x => x.q.question_id === q)?.q;
+    return `<tr class="click" data-q="${esc(q)}"><td><span class="mono">${esc(q)}</span> <span class="small muted">${esc((qq?.question || "").slice(0, 70))}${(qq?.question || "").length > 70 ? "…" : ""}</span></td>${X.ss.map(s => { const r = sheet.rows.find(x => x.question_id === q && x.strategy === s);
+      if (!r) return `<td class="c">—</td><td class="c">—</td>`;
+      const sc = (r.grounding_score_0_2 || "").trim();
+      return `<td class="c">${r.evidence_hit_at_3_proxy === "True" ? `<span class="chip good">✓</span>` : `<span class="chip bad">✕</span>`}</td><td class="c">${sc !== "" ? `<span class="chip ${sc === "2" ? "good" : sc === "1" ? "mid" : "bad"}">${esc(sc)}</span>` : `<span class="muted">·</span>`}</td>`; }).join("")}</tr>`; }).join("")}
+  </tbody></table></div>`;
+}
+function impactCard(a, b, coh, gs) {
+  const ca = X.cfg(a), cb = X.cfg(b), Ia = D.ingest?.[X.idx(a)] || {}, Ib = D.ingest?.[X.idx(b)] || {};
+  const what = ca.chunking !== cb.chunking || (ca.size ?? ca.max_size) !== (cb.size ?? cb.max_size) ? "Thay cách chia chunk" : (!!ca.filter !== !!cb.filter ? "Thêm metadata filter" : "Thay cấu hình");
+  const row = (label, va, vb, f = (x) => x, dfmt, unit = "", higherBetter = true) => {
+    const d = (va == null || vb == null) ? null : vb - va;
+    const cls = d == null || d === 0 ? "eq" : ((d > 0) === higherBetter ? "up" : "down");
+    return `<tr><td>${label}</td><td class="num">${f(va)}</td><td class="num">${f(vb)}</td><td class="num"><span class="delta ${higherBetter === null ? "eq" : cls}">${d == null ? "—" : (d > 0 ? "+" : "") + (dfmt ? dfmt(d) : d) + unit}</span></td></tr>`;
+  };
+  const sa = (sp) => stat(a, sp) || {}, sb = (sp) => stat(b, sp) || {};
+  const ppt = (d) => (d * 100).toFixed(1).replace(/\.0$/, "");
+  const ratio = (s) => s.hit_at_1 != null ? `${s.hit_at_1}/${s.n}` : "—";
+  const gained = [], lost = [], moved = [];
+  for (const x of X.Q) {
+    const ra = x.s[a]?.first_hit_rank || null, rb = x.s[b]?.first_hit_rank || null;
+    if (ra === rb) continue;
+    const tag = `${x.q.question_id}: ${ra ? "#" + ra : "✕"}→${rb ? "#" + rb : "✕"}`;
+    if (!ra && rb) gained.push([x.q.question_id, tag]); else if (ra && !rb) lost.push([x.q.question_id, tag]); else moved.push([x.q.question_id, tag, rb < ra]);
+  }
+  const chips = (arr, cls) => arr.map(([q, t, up]) => `<a href="#" class="chip ${cls || (up ? "good" : "bad")}" data-qlink="${esc(q)}">${esc(t)}</a>`).join(" ");
+  return `<div class="panel"><h3>${esc(a)} → ${esc(b)} · ${what}</h3>
+  <div class="tbl-wrap"><table class="data"><thead><tr><th>Chỉ số</th><th class="num">${esc(a)}</th><th class="num">${esc(b)}</th><th class="num">Δ</th></tr></thead><tbody>
+    ${row("Hit@1 · dev", sa("dev").hit_at_1_rate, sb("dev").hit_at_1_rate, pct, ppt, " đ%")}
+    ${row("Evidence Hit@3 · dev", sa("dev").hit_at_3_rate, sb("dev").hit_at_3_rate, pct, ppt, " đ%")}
+    ${row("Hit@1 · test", sa("test").hit_at_1_rate, sb("test").hit_at_1_rate, pct, ppt, " đ%")}
+    ${row("Evidence Hit@3 · test", sa("test").hit_at_3_rate, sb("test").hit_at_3_rate, pct, ppt, " đ%")}
+    ${row("Filter compliant (tất cả)", sa("all").filter_questions ? sa("all").filter_compliant / sa("all").filter_questions : null, sb("all").filter_questions ? sb("all").filter_compliant / sb("all").filter_questions : null, pct, ppt, " đ%")}
+    ${row("Coherence TB /2", coh[a]?.mean, coh[b]?.mean, (x) => num(x), (d) => d.toFixed(2))}
+    ${row("Grounding TB /2", gs[a]?.mean, gs[b]?.mean, (x) => num(x), (d) => d.toFixed(2))}
+    ${row("Số chunk", Ia.chunk_count, Ib.chunk_count, fmt, null, "", null)}
+    ${row("Median ký tự/chunk", Ia.median_chars, Ib.median_chars, fmt, (d) => d.toFixed(1), "", null)}
+  </tbody></table></div>
+  <div class="note">đ% = điểm phần trăm. Hit@1 tất cả: ${ratio(sa("all"))} → ${ratio(sb("all"))}.</div>
+  <div style="margin-top:10px"><div class="small"><b>Câu được thêm</b> (${gained.length}) ${chips(gained, "good") || `<span class="muted">không có</span>`}</div>
+  <div class="small" style="margin-top:4px"><b>Câu bị mất</b> (${lost.length}) ${chips(lost, "bad") || `<span class="muted">không có</span>`}</div>
+  <div class="small" style="margin-top:4px"><b>Đổi rank</b> (${moved.length}) ${chips(moved) || `<span class="muted">không có</span>`}</div></div>
+  </div>`;
+}
+function decisionBlock(coh, gs, ma) {
+  const ss = X.ss;
+  // Rule fixed before reading test: dev Hit@3 → dev Hit@1 → dev filter compliance → coherence → fewer chunks.
+  const key = (s) => {
+    const d = stat(s, "dev") || {};
+    return [d.hit_at_3_rate ?? 0, d.hit_at_1_rate ?? 0, d.filter_questions ? d.filter_compliant / d.filter_questions : 0, coh[s]?.mean ?? -1, -(D.ingest?.[X.idx(s)]?.chunk_count ?? 0)];
+  };
+  const ranked = [...ss].sort((a, b) => { const ka = key(a), kb = key(b); for (let i = 0; i < ka.length; i++) if (ka[i] !== kb[i]) return kb[i] - ka[i]; return 0; });
+  const top = ranked.filter(s => key(s).join() === key(ranked[0]).join());
+  const ruleNames = ["Evidence Hit@3 (dev)", "Hit@1 (dev)", "Filter compliance (dev)", "Coherence TB (thủ công)", "Ít chunk hơn"];
+  const rows = [
+    ["Hit@1 · dev", (s) => stat(s, "dev")?.hit_at_1_rate, (s) => `${stat(s, "dev")?.hit_at_1}/${stat(s, "dev")?.n}`],
+    ["Evidence Hit@3 · dev", (s) => stat(s, "dev")?.hit_at_3_rate, (s) => `${stat(s, "dev")?.hit_at_3}/${stat(s, "dev")?.n}`],
+    ["Hit@1 · test", (s) => stat(s, "test")?.hit_at_1_rate, (s) => `${stat(s, "test")?.hit_at_1}/${stat(s, "test")?.n}`],
+    ["Evidence Hit@3 · test", (s) => stat(s, "test")?.hit_at_3_rate, (s) => `${stat(s, "test")?.hit_at_3}/${stat(s, "test")?.n}`],
+    ["② Coherence TB /2", (s) => coh[s]?.mean, (s) => num(coh[s]?.mean)],
+    ["③ Metadata đủ trường (test top-3)", (s) => ma[s].n ? ma[s].full / ma[s].n : null, (s) => `${ma[s].full}/${ma[s].n}`],
+    ["③ Filter compliant (tất cả)", (s) => { const a = stat(s, "all"); return a?.filter_questions ? a.filter_compliant / a.filter_questions : null; }, (s) => `${stat(s, "all")?.filter_compliant}/${stat(s, "all")?.filter_questions}`],
+    ["④ Grounding TB /2", (s) => gs[s]?.mean, (s) => num(gs[s]?.mean)],
+  ];
+  const t = (s) => stat(s, "test") || {};
+  return `<div class="crit" id="c6"><div class="crit-head"><h2>Kết luận &amp; chọn cấu hình</h2></div>
+  <p class="req">Quy tắc chọn được cố định trước khi đọc test và chỉ dùng chỉ số dev (grounding chấm trên test nên chỉ để báo cáo): ${ruleNames.map((r, i) => `<b>${i + 1}.</b> ${r}`).join(" → ")}.</p>
+  <div class="grid g2">
+    <div class="panel decision"><h3>Đề xuất theo quy tắc</h3>
+      <div style="font-size:26px;font-weight:800">${top.length > 1 ? `Đồng hạng: ${top.join(" = ")}` : esc(top[0] || "—")}</div>
+      <div class="small muted">${top.map(s => esc(stratDesc(s))).join(" · ")}</div>
+      <div class="note">Thứ hạng: ${ranked.map(esc).join(" › ")}.
+      ${top.length > 1 ? ` Các chiến lược đồng hạng giống nhau trên mọi tiêu chí dev. Cần thêm điểm coherence thủ công, hoặc chọn theo yêu cầu thực tế (ví dụ C nếu người dùng thường cung cấp phạm vi chương).` : ""}</div>
+      <div class="verdict">Kết quả test của ${esc(top.join("/"))} (chỉ để báo cáo, không dùng để chọn): ${top.map(s => `${esc(s)}: Hit@1 ${t(s).hit_at_1}/${t(s).n}, Hit@3 ${t(s).hit_at_3}/${t(s).n}${t(s).filter_questions ? `, filter ${t(s).filter_compliant}/${t(s).filter_questions}` : ""}`).join(" · ")}.
+      Test chỉ có ${t(ss[0]).n} câu, chênh 1 câu = ${pct(1 / (t(ss[0]).n || 1))}; không suy rộng ngoài corpus này.</div>
+    </div>
+    <div class="tbl-wrap"><table class="data"><thead><tr><th>Bảng điểm</th>${ss.map(s => `<th class="num">${esc(s)}</th>`).join("")}</tr></thead><tbody>
+      ${rows.map(([label, val, txt]) => { const vals = ss.map(val); const b = bestOf(vals); const distinct = uniq(vals.filter(v => v != null)).length > 1;
+        return `<tr><td>${label}</td>${ss.map((s, i) => `<td class="num ${distinct && vals[i] === b ? "best" : ""}">${vals[i] == null ? `<span class="muted">${/Coherence|Grounding/.test(label) ? "chưa chấm" : "N/A"}</span>` : esc(txt(s))}</td>`).join("")}</tr>`; }).join("")}
+    </tbody></table></div>
+  </div></div>`;
+}
+
+/* experiment log (artifacts/experiment_log.csv) */
+function expLogProposal() {
+  const cur = D.explog;
+  const head = cur?.head?.length ? cur.head : ["strategy", "chunking", "chunk_size", "overlap", "metadata", "filter", "vectorizer", "hypothesis", "dev_hit1", "dev_hit3", "test_hit1", "test_hit3", "notes"];
+  const metaFields = "document_id, source, page, section, section_title, year";
+  return { head, rows: X.ss.map(s => {
+    const c = X.cfg(s), old = cur?.rows.find(r => r.strategy === s) || {}, d = stat(s, "dev") || {}, t = stat(s, "test") || {};
+    const auto = {
+      strategy: s, chunking: c.chunking ?? "", chunk_size: c.size ?? c.max_size ?? "", overlap: c.overlap ?? "",
+      metadata: metaFields, filter: c.filter ? "section (chỉ khi câu hỏi có filter)" : "none",
+      vectorizer: `${D.config?.embedding_model ?? ""} (${D.config?.dimensions ?? "?"}d)`,
+      dev_hit1: d.n ? `${d.hit_at_1}/${d.n}` : "", dev_hit3: d.n ? `${d.hit_at_3}/${d.n}` : "",
+      test_hit1: t.n ? `${t.hit_at_1}/${t.n}` : "", test_hit3: t.n ? `${t.hit_at_3}/${t.n}` : "",
+    };
+    return Object.fromEntries(head.map(k => [k, ["hypothesis", "notes"].includes(k) ? (old[k] ?? "") : (auto[k] ?? old[k] ?? "")]));
+  }) };
+}
+let expDraft = null;
+function expLogBlock() {
+  if (!expDraft || !dirty.explog) expDraft = expLogProposal();
+  const cur = D.explog;
+  const same = cur && toCSV(cur.head, cur.rows, "\n") === toCSV(expDraft.head, expDraft.rows, "\n");
+  return `<div class="crit" id="c7"><div class="crit-head"><h2>Nhật ký thí nghiệm</h2><span class="chip ${same ? "good" : "mid"}">${cur ? (same ? "khớp với file" : "khác với file hiện tại") : "không đọc được file"}</span></div>
+  <p class="req">Bản nháp cho <code>artifacts/experiment_log.csv</code>: các cột số liệu điền tự động từ results; cột <b>hypothesis</b> và <b>notes</b> do bạn viết.</p>
+  <div class="tbl-wrap"><table class="data"><thead><tr>${expDraft.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>
+  ${expDraft.rows.map((r, i) => `<tr>${expDraft.head.map(h => ["hypothesis", "notes"].includes(h)
+    ? `<td><input type="text" class="cell" data-exp="${i}" data-col="${h}" value="${esc(r[h])}" placeholder="${h === "hypothesis" ? "Giả thuyết trước khi chạy…" : "Ghi chú…"}"></td>`
+    : `<td class="small" style="${h === "metadata" ? "min-width:180px" : "white-space:nowrap"}">${h === "strategy" ? `<b>${esc(r[h])}</b>` : esc(r[h])}</td>`).join("")}</tr>`).join("")}
+  </tbody></table></div>
+  <div class="toolbar" style="margin-top:10px"><button class="btn primary" id="exp-save">Lưu vào artifacts/experiment_log.csv</button><button class="btn" id="exp-dl">Tải CSV</button><span class="small muted" id="exp-msg"></span></div></div>`;
+}
+function bindExpLog() {
+  $$("input[data-exp]").forEach(inp => inp.oninput = () => { expDraft.rows[+inp.dataset.exp][inp.dataset.col] = inp.value; dirty.explog = true; updateSaveState(); });
+  const btn = $("#exp-save"); if (!btn) return;
+  btn.onclick = async () => {
+    const hasOld = D.explog?.rows.some(r => Object.entries(r).some(([k, v]) => k !== "strategy" && v.trim()));
+    if (hasOld && !confirm("experiment_log.csv đã có nội dung. Ghi đè bằng bản nháp này?")) return;
+    try { await saveSheet("explog", expDraft.head, expDraft.rows); D.explog = { head: expDraft.head, rows: expDraft.rows.map(r => ({ ...r })) }; dirty.explog = false; $("#exp-msg").textContent = "Đã lưu ✓"; renderEval(); }
+    catch (e) { $("#exp-msg").textContent = "Lỗi: " + e.message; }
+  };
+  $("#exp-dl").onclick = () => download("experiment_log.csv", toCSV(expDraft.head, expDraft.rows, SAVE_AS.explog.eol), false);
+}
+
+/* =====================================================================
+   Manual grading
+   ===================================================================== */
+let gradeSheet = store.get("gradeSheet", "coherence");
+function scoreSeg(cur, attrs) {
+  return `<div class="seg score" ${attrs}>${["0", "1", "2"].map(v => `<button data-v="${v}" class="${String(cur).trim() === v ? "on" : ""}">${v}</button>`).join("")}</div>`;
+}
+function ynSeg(cur, attrs) {
+  const c = String(cur || "").trim().toLowerCase();
+  return `<div class="seg yn" ${attrs}>${["y", "n"].map(v => `<button data-v="${v}" class="${c === v ? "on" : ""}">${v.toUpperCase()}</button>`).join("")}</div>`;
+}
+function renderGrade() {
+  const el = $("#tab-grade");
+  const cs = D.coherence, gr = D.grounding;
+  const done = (sheet, col) => sheet ? sheet.rows.filter(r => (r[col] || "").trim() !== "").length : 0;
+  let h = `<p class="lead">Chấm các tiêu chí cần đánh giá thủ công. Điểm được ghi vào file CSV trong <code>starter/results/</code>. <code>run.py</code> không ghi đè sheet đã có điểm: khi chạy lại, nó viết sang file <code>*.new.csv</code>.</p>
+  <div class="toolbar"><div class="seg" id="gsheet">
+    <button data-v="coherence" class="${gradeSheet === "coherence" ? "on" : ""}">② Coherence · ${done(cs, "coherence_score_0_2")}/${cs?.rows.length ?? 0}</button>
+    <button data-v="grounding" class="${gradeSheet === "grounding" ? "on" : ""}">③④ Grounding + metadata · ${done(gr, "grounding_score_0_2")}/${gr?.rows.length ?? 0}</button></div></div>
+  <div id="gbody"></div>
+  <div class="savebar"><span class="msg" id="gmsg"></span><button class="btn" id="gdl">Tải CSV</button><button class="btn primary" id="gsave">Lưu vào results/</button></div>`;
+  el.innerHTML = h;
+  $$("#gsheet button", el).forEach(b => b.onclick = () => { gradeSheet = b.dataset.v; store.set("gradeSheet", gradeSheet); renderGrade(); });
+  const body = $("#gbody");
+  if (gradeSheet === "coherence") body.innerHTML = gradeCoherence(); else body.innerHTML = gradeGrounding();
+
+  // bind score + yn + reason controls
+  $$(".seg.score, .seg.yn", body).forEach(seg => seg.onclick = (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    const sheet = D[seg.dataset.sheet], row = sheet.rows[+seg.dataset.row], col = seg.dataset.col;
+    row[col] = row[col]?.trim() === b.dataset.v ? "" : b.dataset.v;
+    $$("button", seg).forEach(x => x.classList.toggle("on", x.dataset.v === row[col]));
+    dirty[seg.dataset.sheet] = true; updateSaveState(); refreshGradeCounts();
+  });
+  $$("input[data-sheet]", body).forEach(inp => inp.oninput = () => {
+    D[inp.dataset.sheet].rows[+inp.dataset.row][inp.dataset.col] = inp.value; dirty[inp.dataset.sheet] = true; updateSaveState();
+  });
+  $("#gsave").onclick = async () => {
+    const k = gradeSheet, sh = D[k]; if (!sh) return;
+    try { await saveSheet(k, sh.head, sh.rows); dirty[k] = false; D[k + "Raw"] = toCSV(sh.head, sh.rows, SAVE_AS[k].eol); $("#gmsg").innerHTML = `<b style="color:var(--good)">Đã lưu ${SAVE_AS[k].name} ✓</b>`; }
+    catch (e) { $("#gmsg").innerHTML = `<span style="color:var(--bad)">Không lưu được: ${esc(e.message)}. Dùng "Tải CSV" rồi chép vào results/.</span>`; }
+  };
+  $("#gdl").onclick = () => { const sh = D[gradeSheet]; if (sh) download(SAVE_AS[gradeSheet].name, toCSV(sh.head, sh.rows, SAVE_AS[gradeSheet].eol), SAVE_AS[gradeSheet].bom); };
+  updateSaveState();
+}
+function refreshGradeCounts() {
+  const cs = D.coherence, gr = D.grounding;
+  const done = (sheet, col) => sheet ? sheet.rows.filter(r => (r[col] || "").trim() !== "").length : 0;
+  const b = $$("#gsheet button");
+  if (b[0]) b[0].textContent = `② Coherence · ${done(cs, "coherence_score_0_2")}/${cs?.rows.length ?? 0}`;
+  if (b[1]) b[1].textContent = `③④ Grounding + metadata · ${done(gr, "grounding_score_0_2")}/${gr?.rows.length ?? 0}`;
+}
+function gradeCoherence() {
+  const sh = D.coherence; if (!sh) return `<p class="empty">Không có manual_coherence.csv</p>`;
+  const pages = uniq(sh.rows.map(r => r.page));
+  const idxs = uniq(sh.rows.map(r => r.strategy));
+  return `<div class="panel" style="margin-bottom:12px"><b>Thang điểm:</b> 0 = bị cắt giữa ý / thiếu chủ thể làm không hiểu · 1 = hiểu một phần, thiếu ngữ cảnh · 2 = tự hiểu được và giữ trọn ý.
+    <span class="muted">Đoạn tô vàng là vị trí neo (anchor) của mẫu. ${X.ss.filter(s => X.idx(s) !== s).map(s => `${s} dùng chunk của ${X.idx(s)} nên không chấm riêng.`).join(" ")}</span></div>` +
+  pages.map((p, n) => `<div class="panel" style="margin-bottom:10px"><h3>Vị trí ${n + 1} · trang ${esc(p)}</h3><div class="cols">${idxs.map(k => {
+    const i = sh.rows.findIndex(r => r.page === p && r.strategy === k); if (i < 0) return "";
+    const r = sh.rows[i];
+    return `<div class="col"><h3><span>Index ${esc(k)} <span class="muted small mono">${esc(r.chunk_id)}</span></span></h3>
+      <div class="hit-text">${highlight(r.chunk_text, [r.anchor])}</div>
+      <div class="grade">${scoreSeg(r.coherence_score_0_2, `data-sheet="coherence" data-row="${i}" data-col="coherence_score_0_2"`)}
+      <input type="text" data-sheet="coherence" data-row="${i}" data-col="reason" value="${esc(r.reason)}" placeholder="Lý do…"></div></div>`;
+  }).join("")}</div></div>`).join("");
+}
+function gradeGrounding() {
+  const sh = D.grounding; if (!sh) return `<p class="empty">Không có manual_grounding.csv</p>`;
+  const qids = uniq(sh.rows.map(r => r.question_id));
+  return `<div class="panel" style="margin-bottom:12px"><b>Grounding (0–2):</b> 0 = top-3 không có bằng chứng · 1 = có nhưng thiếu điều kiện/ngữ cảnh · 2 = đủ để trả lời và truy nguồn.
+    <b>Metadata Y/N:</b> source, page và section của từng chunk có đúng so với nguồn không. Đoạn tô vàng là evidence gold.</div>` +
+  qids.map(q => {
+    const qq = X.Q.find(x => x.q.question_id === q)?.q, first = sh.rows.find(r => r.question_id === q);
+    const quotes = (qq?.gold || []).map(g => g.evidence_quote);
+    return `<details class="panel q" open><summary><div><span class="qid">${esc(q)}</span>${first.filter ? `<span class="chip acc">filter ${esc(first.filter)}</span>` : ""}<div style="margin-top:4px">${esc(first.question)}</div></div>
+      <div class="ranks">${X.ss.map(s => { const r = sh.rows.find(x => x.question_id === q && x.strategy === s); const v = (r?.grounding_score_0_2 || "").trim(); return `<span class="small muted">${esc(s)}</span><span class="rk ${v === "2" ? "r1" : v === "1" ? "r2" : v === "0" ? "miss" : ""}">${v || "·"}</span>`; }).join("")}</div></summary>
+      <div class="q-body"><div class="gold"><div><b>Đáp án kỳ vọng:</b> ${esc(first.expected_answer)}</div>${(qq?.gold || []).map(g => `<div class="small"><b>Gold</b> trang ${esc((g.pages || []).join(", "))}: <i>"${esc(g.evidence_quote)}"</i></div>`).join("")}</div>
+      <div class="cols">${X.ss.map(s => {
+        const i = sh.rows.findIndex(r => r.question_id === q && r.strategy === s); if (i < 0) return "";
+        const r = sh.rows[i];
+        return `<div class="col"><h3><span>Chiến lược ${esc(s)}</span>${r.evidence_hit_at_3_proxy === "True" ? `<span class="chip good">proxy Hit@3 ✓</span>` : `<span class="chip bad">proxy Hit@3 ✕</span>`}</h3>
+          ${[1, 2, 3].map(k => `<div class="hit"><div class="hit-head"><b>#${k}</b><span class="small">${esc(r[`top${k}_source_page`])}</span><span style="flex:1"></span><span class="small muted">metadata đúng?</span>
+            ${ynSeg(r[`top${k}_metadata_correct_y_n`], `data-sheet="grounding" data-row="${i}" data-col="top${k}_metadata_correct_y_n"`)}</div>
+            <div class="hit-text">${highlight(r[`top${k}_text`] || "", quotes)}</div></div>`).join("")}
+          <div class="grade"><span class="small"><b>Grounding</b></span>${scoreSeg(r.grounding_score_0_2, `data-sheet="grounding" data-row="${i}" data-col="grounding_score_0_2"`)}
+          <input type="text" data-sheet="grounding" data-row="${i}" data-col="reason" value="${esc(r.reason)}" placeholder="Lý do…"></div></div>`;
+      }).join("")}</div></div></details>`;
+  }).join("");
+}
+function updateSaveState() {
+  const k = gradeSheet, msg = $("#gmsg");
+  if (msg) msg.innerHTML = dirty[k] ? `<b style="color:var(--mid)">Có thay đổi chưa lưu</b> trong ${SAVE_AS[k].name}` : `<span class="muted">Không có thay đổi chưa lưu</span>`;
+}
+async function saveSheet(k, head, rows) {
+  const cfg = SAVE_AS[k];
+  const body = (cfg.bom ? "﻿" : "") + toCSV(head, rows, cfg.eol);
+  const r = await fetch("/api/save?file=" + encodeURIComponent(cfg.name), { method: "POST", headers: { "Content-Type": "text/csv; charset=utf-8", "X-Dashboard": "1" }, body });
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+}
+function download(name, text, bom) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([(bom ? "﻿" : "") + text], { type: "text/csv;charset=utf-8" }));
+  a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+window.addEventListener("beforeunload", (e) => { if (Object.values(dirty).some(Boolean)) { e.preventDefault(); e.returnValue = ""; } });
+
+/* =====================================================================
+   Question explorer
+   ===================================================================== */
+const QF = { q: "", split: "all", type: "all", status: "all" };
+function hitCard(h, quotes) {
+  const md = h.metadata || {};
+  const flag = (ok, label) => ok == null ? "" : `<span class="chip ${ok ? "good" : "bad"}">${ok ? "✓" : "✕"} ${label}</span>`;
+  return `<div class="hit ${h.is_hit ? "is-hit" : ""}">
+    <div class="hit-head"><b>#${h.rank}</b><span>tr. ${esc(h.page)}</span><span class="mono">score ${(+h.score).toFixed(4)}</span>
+      ${flag(h.page_match, "trang")}${flag(h.evidence_match, "evidence")}${h.evidence_coverage != null ? `<span class="chip">cov ${pct(h.evidence_coverage)}</span>` : ""}
+      ${h.filter_match != null ? flag(h.filter_match, "filter") : ""}</div>
+    <div class="small muted" style="margin-bottom:4px">${esc(md.section_title || md.section || "")} · <span class="mono">${esc(h.chunk_id)}</span></div>
+    <div class="hit-text">${highlight(h.text || "", quotes)}</div>
+    <details class="small" style="margin-top:6px"><summary class="muted" style="cursor:pointer">metadata</summary>${kv(md)}</details>
+  </div>`;
+}
+function questionBody(x) {
+  const q = x.q, quotes = (q.gold || []).map(g => g.evidence_quote);
+  let h = `<div class="gold"><div><b>Đáp án kỳ vọng:</b> ${esc(q.expected_answer)}</div>
+    ${(q.gold || []).map(g => `<div class="small"><b>Gold</b> ${esc(g.source_id)} · trang ${esc((g.pages || []).join(", "))}: <i>"${esc(g.evidence_quote)}"</i></div>`).join("")}
+    ${q.filter ? `<div class="small"><b>Filter:</b> <span class="mono">${esc(JSON.stringify(q.filter))}</span></div>` : ""}</div><div class="cols">`;
+  for (const s of X.ss) {
+    const t = x.s[s]; if (!t) continue;
+    h += `<div class="col"><h3><span>Chiến lược ${esc(s)} <span class="muted small">index ${esc(t.index)}</span></span>${rankBadge(t)}</h3>
+      ${t.failure ? `<div class="note" style="margin:0 0 8px"><span class="chip bad">${esc(fl(t.failure))}</span></div>` : ""}
+      ${t.filter_compliant != null ? `<div class="note" style="margin:0 0 8px">${t.applied_filter ? `Đã lọc <span class="mono">${esc(JSON.stringify(t.applied_filter))}</span>` : "Không lọc"} · tuân thủ filter: <b>${t.filter_compliant ? "có" : "không"}</b></div>` : ""}
+      ${t.filter_note ? `<div class="note">${esc(t.filter_note)}</div>` : ""}
+      ${(t.hits || []).map(hh => hitCard(hh, quotes)).join("")}</div>`;
+  }
+  return h + `</div>`;
+}
+function renderQuestions() {
+  const el = $("#tab-questions");
+  if (!D.traces) { el.innerHTML = `<p class="empty">Không có traces.jsonl</p>`; return; }
+  const all = X.Q, ss = X.ss;
+  el.innerHTML = `<div class="toolbar">
+      <input type="search" id="qf-q" placeholder="Tìm theo ID, câu hỏi, đáp án…" value="${esc(QF.q)}">
+      <select id="qf-split"><option value="all">Mọi split</option>${uniq(all.map(x => x.q.split)).map(s => `<option ${QF.split === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
+      <select id="qf-type"><option value="all">Mọi loại</option>${X.types.map(s => `<option value="${esc(s)}" ${QF.type === s ? "selected" : ""}>${esc(tl(s))}</option>`).join("")}</select>
+      <select id="qf-status">
+        <option value="all">Mọi kết quả</option>
+        <option value="anymiss" ${QF.status === "anymiss" ? "selected" : ""}>Có chiến lược trượt</option>
+        <option value="allmiss" ${QF.status === "allmiss" ? "selected" : ""}>Tất cả đều trượt</option>
+        <option value="diff" ${QF.status === "diff" ? "selected" : ""}>Các chiến lược cho kết quả khác nhau</option>
+        <option value="filter" ${QF.status === "filter" ? "selected" : ""}>Câu có filter</option>
+      </select>
+      <button class="btn" id="qf-open">Mở tất cả</button><button class="btn" id="qf-close">Đóng tất cả</button>
+    </div><div id="qlist"></div>`;
+  const draw = () => {
+    const needle = QF.q.toLowerCase();
+    const list = all.filter(x => {
+      const q = x.q, ts = ss.map(s => x.s[s]).filter(Boolean);
+      if (QF.split !== "all" && q.split !== QF.split) return false;
+      if (QF.type !== "all" && q.type !== QF.type) return false;
+      if (QF.status === "anymiss" && !ts.some(t => !t.hit_at_3)) return false;
+      if (QF.status === "allmiss" && !ts.every(t => !t.hit_at_3)) return false;
+      if (QF.status === "diff" && new Set(ts.map(t => t.first_hit_rank ?? 0)).size < 2) return false;
+      if (QF.status === "filter" && !q.filter) return false;
+      return !needle || [q.question_id, q.question, q.expected_answer].join(" ").toLowerCase().includes(needle);
+    });
+    $("#qlist").innerHTML = (list.length ? "" : `<p class="empty">Không có câu hỏi phù hợp.</p>`) + list.map(x => `
+      <details class="panel q" id="q-${esc(x.q.question_id)}">
+        <summary><div><span class="qid">${esc(x.q.question_id)}</span><span class="chip">${esc(x.q.split)}</span> <span class="chip">${esc(tl(x.q.type))}</span>${x.q.filter ? ` <span class="chip acc">filter</span>` : ""}
+          <div style="margin-top:4px">${esc(x.q.question)}</div></div>
+          <div class="ranks">${ss.map(s => `<span class="small muted">${esc(s)}</span>${rankBadge(x.s[s])}`).join("")}</div></summary>
+        <div class="q-body" data-lazy="${esc(x.q.question_id)}"></div>
+      </details>`).join("");
+    $$("#qlist details.q").forEach(d => d.addEventListener("toggle", () => {
+      const b = d.querySelector(".q-body");
+      if (d.open && !b.innerHTML) b.innerHTML = questionBody(all.find(x => x.q.question_id === b.dataset.lazy));
+    }));
+  };
+  draw();
+  $("#qf-q").oninput = (e) => { QF.q = e.target.value; draw(); };
+  for (const k of ["split", "type", "status"]) $("#qf-" + k).onchange = (e) => { QF[k] = e.target.value; draw(); };
+  $("#qf-open").onclick = () => $$("#qlist details.q").forEach(d => d.open = true);
+  $("#qf-close").onclick = () => $$("#qlist details.q").forEach(d => d.open = false);
+}
+function openQuestion(id) {
+  Object.assign(QF, { q: "", split: "all", type: "all", status: "all" });
+  renderQuestions(); showTab("questions");
+  const d = document.getElementById("q-" + id);
+  if (d) { d.open = true; setTimeout(() => d.scrollIntoView({ behavior: "smooth", block: "start" }), 30); }
+}
+document.addEventListener("click", (e) => { const a = e.target.closest("a[data-qlink]"); if (a) { e.preventDefault(); openQuestion(a.dataset.qlink); } });
+
+/* =====================================================================
+   Log & raw files
+   ===================================================================== */
+const LF = { q: "", level: "all", lastRun: true };
+function renderRaw() {
+  const el = $("#tab-raw");
+  const size = (k) => D[k + "Raw"] != null ? `${(new Blob([D[k + "Raw"]]).size / 1024).toFixed(1)} KB` : "không đọc được";
+  el.innerHTML = `<h2>run.log</h2><div class="toolbar"><input type="search" id="lf-q" placeholder="Lọc log…" value="${esc(LF.q)}">
+    <select id="lf-l"><option value="all">Mọi level</option>${["INFO", "WARNING", "ERROR"].map(l => `<option ${LF.level === l ? "selected" : ""}>${l}</option>`).join("")}</select>
+    <label class="small"><input type="checkbox" id="lf-last" ${LF.lastRun ? "checked" : ""}> Chỉ lần chạy gần nhất</label>
+    <span id="lf-count" class="small muted"></span></div><div class="log" id="logbox"></div>
+    <h2>File gốc</h2><div class="toolbar"><select id="ff">${Object.entries(FILES).map(([k, f]) => `<option value="${k}">${esc(f.replace(/^(\.\.\/)+/, ""))} · ${size(k)}</option>`).join("")}</select>
+    <a class="btn" id="fopen" target="_blank">Mở file ↗</a></div><div class="panel"><pre class="raw" id="fraw"></pre></div>`;
+  const drawLog = () => {
+    const lines = LF.lastRun ? X.lastLog : (D.log || "").split(/\r?\n/).filter(Boolean);
+    const n = LF.q.toLowerCase();
+    const out = lines.filter(l => (LF.level === "all" || l.includes(" " + LF.level + " ")) && (!n || l.toLowerCase().includes(n)));
+    $("#lf-count").textContent = `${out.length} dòng`;
+    $("#logbox").innerHTML = out.map(l => { const m = l.match(/^(\S+ \S+) (\w+) (.*)$/); return m ? `<div class="${m[2]}"><span class="ts">${esc(m[1])}</span> ${esc(m[2])} ${esc(m[3])}</div>` : `<div>${esc(l)}</div>`; }).join("") || `<div class="empty">Không có dòng nào.</div>`;
+  };
+  const showFile = () => {
+    const k = $("#ff").value; let t = D[k + "Raw"] ?? "(không đọc được)";
+    if (FILES[k].endsWith(".json")) { try { t = JSON.stringify(JSON.parse(t), null, 2); } catch {} }
+    if (t.length > 200000) t = t.slice(0, 200000) + "\n… (đã cắt, mở file để xem đầy đủ)";
+    $("#fraw").textContent = t; $("#fopen").href = FILES[k];
+  };
+  drawLog(); showFile();
+  $("#lf-q").oninput = (e) => { LF.q = e.target.value; drawLog(); };
+  $("#lf-l").onchange = (e) => { LF.level = e.target.value; drawLog(); };
+  $("#lf-last").onchange = (e) => { LF.lastRun = e.target.checked; drawLog(); };
+  $("#ff").onchange = showFile;
+}
+
+/* =====================================================================
+   Shell
+   ===================================================================== */
+const TABS = ["pipeline", "eval", "grade", "questions", "raw"];
+function showTab(name) {
+  if (!TABS.includes(name)) name = "pipeline";
+  if (name === "eval" && D.summary) renderEval(); // picks up scores entered in the grading tab
+  $$("#nav button").forEach(b => b.classList.toggle("on", b.dataset.tab === name));
+  $$("section.tab").forEach(s => s.classList.toggle("on", s.id === "tab-" + name));
+  store.set("tab", name);
+  if (location.hash !== "#" + name) history.replaceState(null, "", "#" + name);
+}
+function renderAll() {
+  renderMeta(); renderPipeline(); renderEval(); renderGrade(); renderQuestions(); renderRaw();
+}
+$$("#nav button").forEach(b => b.onclick = () => showTab(b.dataset.tab));
+window.addEventListener("hashchange", () => showTab(location.hash.slice(1)));
+$("#reload").onclick = load;
+$("#theme").onclick = () => {
+  const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next; store.set("theme", next);
+};
+{ const t = store.get("theme", null); if (t) document.documentElement.dataset.theme = t; }
+showTab(location.hash.slice(1) || store.get("tab", "pipeline"));
+load();
+</script>
+</body>
+</html>
